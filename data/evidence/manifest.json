@@ -1,0 +1,55 @@
+{
+  "purpose": "Recycle Proof 4.0 synthetic evidence pack for hackathon demo",
+  "claim": {
+    "claim_id": "CLM-001",
+    "material": "e-waste",
+    "quantity_t": 20.0,
+    "facility_id": "FAC-001",
+    "period": [
+      "2026-08-01",
+      "2026-08-02"
+    ]
+  },
+  "files": [
+    {
+      "filename": "facility_profile.pdf",
+      "sha256": "044462cad57bde4c15036ed3a71c7c7538113f40869b25212c042b180f26d29d",
+      "bytes": 2430
+    },
+    {
+      "filename": "processing_shift_record.pdf",
+      "sha256": "da65a2ca8156e82194f02df447462d8511755e23aa17c739837075318a6da3f7",
+      "bytes": 2428
+    },
+    {
+      "filename": "recycler_declaration.pdf",
+      "sha256": "43f52e795da3446e0b066213545c76634537728e3da761b349db8b1e22ff76dc",
+      "bytes": 2384
+    },
+    {
+      "filename": "recycler_invoice.pdf",
+      "sha256": "1214b012be9a1a5a08730b00de8245db4a2eb9ffbe5239402d4bef7898d8d8f8",
+      "bytes": 2397
+    },
+    {
+      "filename": "recycling_certificate.pdf",
+      "sha256": "dcb85a63865fd38908f046ebb22aff3bcedee769a727799a2e34a0a2cd9d6ce4",
+      "bytes": 2427
+    },
+    {
+      "filename": "transport_manifest.pdf",
+      "sha256": "bbd32c796ab8a66bec0c1dc53890721b1fe5f5e0abefd57f19d0655620c74ba7",
+      "bytes": 2445
+    },
+    {
+      "filename": "transport_manifest_03.pdf",
+      "sha256": "84541ba9b8814c7a8438445473743ca16705cae2286d6fa0b98615e8ff571a55",
+      "bytes": 2454
+    },
+    {
+      "filename": "weighbridge_scan.pdf",
+      "sha256": "7cc73e2a6e3add61d640bcb8bdaac242139b98d47a4797a418825de0bc9130a0",
+      "bytes": 2460
+    }
+  ]
+}
