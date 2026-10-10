@@ -83,6 +83,8 @@ def discard_excluded_upload(artifact: Artifact) -> None:
         # failure should not turn a scope mismatch into accepted evidence.
         pass
     artifact.local_path = None
+
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     init_db()
@@ -96,6 +98,8 @@ app = FastAPI(
     lifespan=lifespan,
 )
 app.include_router(case_router)
+
+
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
@@ -119,8 +123,12 @@ def custom_openapi():
     return app.openapi_schema
 app.openapi = custom_openapi
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=False, allow_methods=['*'], allow_headers=['*'])
+
+
 class ScenarioRequest(BaseModel):
     scenario: str = 'baseline'
+
+
 def parse_quantity_t(value: str | None) -> float:
     """Convert a claim quantity such as '20 t' or '20000 kg' to tonnes."""
     if not value:
