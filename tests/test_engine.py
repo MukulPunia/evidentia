@@ -133,3 +133,22 @@ def test_shift_record_raises_supportable_quantity_to_transport_evidence():
 
 def test_health():
     assert client.get("/api/health").json()["status"] == "ok"
+
+def test_demo_analysis_does_not_mutate_shared_scenario_templates(monkeypatch):
+    before_filename = main.SCENARIOS["baseline"][0].filename
+    before_metadata = deepcopy(main.SCENARIOS["baseline"][0].metadata)
+
+    def mutate_request_artifacts(artifacts):
+        # Behave like an evidence-attachment step that adds request-specific
+        # data. This must affect only the request copy, not the shared fixture.
+        artifacts[0].filename = "request-only-mutated.pdf"
+        artifacts[0].metadata["request_only_marker"] = True
+        return prepare_synthetic_evidence(artifacts)
+
+    monkeypatch.setattr(main, "attach_local_evidence", mutate_request_artifacts)
+    response = client.post("/api/analyze", json={"scenario": "baseline"})
+
+    assert response.status_code == 200
+    assert main.SCENARIOS["baseline"][0].filename == before_filename
+    assert main.SCENARIOS["baseline"][0].metadata == before_metadata
+
