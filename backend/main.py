@@ -118,7 +118,22 @@ def custom_openapi():
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 app.openapi = custom_openapi
-app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=False, allow_methods=['*'], allow_headers=['*'])
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "EVIDENTIA_ALLOWED_ORIGINS",
+        "https://evidentia-cykn.onrender.com,http://localhost:8000,http://127.0.0.1:8000,http://localhost:5173,http://127.0.0.1:5173",
+    ).split(",")
+    if origin.strip()
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+)
 class ScenarioRequest(BaseModel):
     scenario: str = 'baseline'
 SCENARIOS = {
