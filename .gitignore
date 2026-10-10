@@ -1,7 +1,6 @@
-# Python
+# Python files and test cache
 __pycache__/
 *.py[cod]
-*.pyo
 .pytest_cache/
 
 # Virtual environments
@@ -9,21 +8,25 @@ __pycache__/
 venv/
 env/
 
-# Secrets
+# Local secrets
 .env
 .env.*
 !.env.example
 
-# Frontend
+# Frontend build/cache
 node_modules/
 dist/
 .vite/
 
-# Runtime uploads / temporary files
+# Local database and uploaded files
+data/evidentia.db
+data/*.db
 data/uploads/
-*.log
+*.sqlite
+*.sqlite3
 
-# OS / editor
+# Logs and OS/editor files
+*.log
 .DS_Store
 Thumbs.db
 .vscode/

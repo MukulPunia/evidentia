@@ -131,3 +131,40 @@ def test_relevant_document_without_known_type_can_be_accepted():
     )
 
     assert result["status"] == "accepted"
+
+def test_paper_card_contract_is_excluded_from_ewaste_claim():
+    artifact = Artifact(
+        "A-PAPER",
+        "unknown",
+        "27176-Paper-cardboard-recycling.pdf",
+        "unknown",
+        "Unknown",
+        (
+            "Suffolk paper and cardboard recycling contract. "
+            "Historical total 53,600 tonnes. The facility processes paper, card, "
+            "plastic and metal; annual recovery rate was reported for 2017/18."
+        ),
+    )
+
+    result = assess_document_relevance(artifact, CLAIM)
+
+    assert result["status"] == "excluded"
+    assert result["material_match"] is False
+    assert "material" in result["reason"].lower()
+    assert "claim_material_mismatch" in result["signals"]
+
+
+def test_matching_paper_card_claim_is_not_excluded_by_material_scope():
+    artifact = Artifact(
+        "A-PAPER-MATCH",
+        "unknown",
+        "paper_card_receiving_record.pdf",
+        "unknown",
+        "Unknown",
+        "Paper and cardboard recycling receiving record, net weight: 10 tonnes.",
+    )
+    claim = {**CLAIM, "material": "paper/cardboard"}
+    result = assess_document_relevance(artifact, claim)
+
+    assert result["status"] != "excluded"
+    assert result["material_match"] is True

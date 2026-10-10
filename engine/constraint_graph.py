@@ -222,13 +222,59 @@ def build_constraint_graph(
         value_t=envelope.final_supportable_t,
     )
 
-    for artifact in artifacts:
-        if artifact.artifact_type == "facility_profile":
-            add_edge(
-                artifact.artifact_id,
-                "SETS_BOUND",
-                constraint_id,
-            )
+
+    # Link the binding constraint to the evidence that actually sets it.
+    binding_label = (envelope.binding_constraint or "").lower()
+
+    if "processing capacity" in binding_label:
+        binding_types = {"facility_profile", "shift_record"}
+    elif "transport" in binding_label:
+        binding_types = {"transport_manifest"}
+    elif "receipt" in binding_label or "custody" in binding_label:
+        binding_types = {"weighbridge"}
+    else:
+        binding_types = set()
+
+    binding_candidates = [
+        artifact
+        for artifact in artifacts
+        if artifact.artifact_type in binding_types
+        and artifact.artifact_id in quantities
+        and not artifact.derived_from
+    ]
+
+    # Prefer the source whose quantity matches the final support limit.
+    target_quantity = float(envelope.final_supportable_t)
+
+    matching_candidates = [
+        artifact
+        for artifact in binding_candidates
+        if abs(
+            quantities[artifact.artifact_id] - target_quantity
+        ) < 0.001
+    ]
+
+    if not matching_candidates and binding_candidates:
+        lowest_quantity = min(
+            quantities[artifact.artifact_id]
+            for artifact in binding_candidates
+        )
+
+        matching_candidates = [
+            artifact
+            for artifact in binding_candidates
+            if abs(
+                quantities[artifact.artifact_id] - lowest_quantity
+            ) < 0.001
+        ]
+
+    for artifact in matching_candidates:
+        add_edge(
+            artifact.artifact_id,
+            "SETS_BOUND",
+            constraint_id,
+        )
+
 
     # ---------------------------------------------------------
     # Summary

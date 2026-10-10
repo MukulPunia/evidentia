@@ -20,6 +20,9 @@ class Claim:
     facility_id: str
     period_start: str
     period_end: str
+    # Optional location/jurisdiction context inherited from the linked facility.
+    # It can guide date-format interpretation but is not proof of document origin.
+    jurisdiction: Optional[str] = None
 
 
 @dataclass

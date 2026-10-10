@@ -306,6 +306,36 @@ def _score_relevance(
     return score, signals, matched_categories, inferred_type
 
 
+
+MATERIAL_FAMILIES: dict[str, tuple[str, ...]] = {
+    "e_waste": (
+        "e waste", "electronic waste", "electrical and electronic waste",
+        "electronic scrap", "weee",
+    ),
+    "paper_card": ("paper", "cardboard", "card", "fibre", "fiber"),
+    "plastic": ("plastic", "plastics"),
+    "metal": ("metal", "metals", "steel", "aluminium", "aluminum"),
+    "glass": ("glass",),
+    "organic": ("organic waste", "food waste", "compost"),
+    "construction": ("construction waste", "demolition waste", "concrete rubble"),
+}
+
+
+def _material_family(value: str) -> str | None:
+    normalized = _normalize(value)
+    for family, aliases in MATERIAL_FAMILIES.items():
+        if any(_contains_phrase(normalized, alias) for alias in aliases):
+            return family
+    return None
+
+
+def _document_material_families(normalized_text: str) -> list[str]:
+    return [
+        family
+        for family, aliases in MATERIAL_FAMILIES.items()
+        if any(_contains_phrase(normalized_text, alias) for alias in aliases)
+    ]
+
 def assess_document_relevance(
     artifact: Artifact,
     claim: Claim,
@@ -322,10 +352,46 @@ def assess_document_relevance(
         review   -> relevance is uncertain / insufficiently grounded
         excluded -> document is clearly unrelated and has no evidence signal
     """
-    del claim  # Claim context is reserved for future claim-specific scoring.
-
     normalized_text = _get_search_text(artifact)
     score, signals, categories, inferred_type = _score_relevance(artifact)
+
+    # Material scope must be checked before generic "recycling/waste/tonnes"
+    # terms. Otherwise a paper/card contract can be accepted as evidence for
+    # an e-waste claim merely because it contains many recycling keywords.
+    claim_material = (
+        getattr(claim, "material", None)
+        if not isinstance(claim, dict)
+        else claim.get("material")
+    )
+    claim_family = _material_family(str(claim_material or ""))
+    document_families = _document_material_families(normalized_text)
+    if claim_family and document_families and claim_family not in document_families:
+        names = {
+            "e_waste": "electronic waste",
+            "paper_card": "paper/cardboard",
+            "plastic": "plastic",
+            "metal": "metal",
+            "glass": "glass",
+            "organic": "organic waste",
+            "construction": "construction waste",
+        }
+        return {
+            "status": "excluded",
+            "confidence": "high",
+            "score": score,
+            "signals": signals + ["claim_material_mismatch"],
+            "matched_categories": categories,
+            "inferred_artifact_type": inferred_type,
+            "reason": (
+                f"The selected claim is for {names.get(claim_family, str(claim_material or 'the stated material'))}, "
+                f"but this document identifies {', '.join(names.get(x, x) for x in document_families)} "
+                "and does not identify the claimed material. It must not support this claim."
+            ),
+            "stamp_required": False,
+            "claim_scope": "material_mismatch",
+            "material_match": False,
+            "document_material_families": document_families,
+        }
 
     # ------------------------------------------------------------------
     # Strong positive evidence
@@ -385,4 +451,6 @@ def assess_document_relevance(
         "reason": reason,
         "stamp_required": False,
         "claim_scope": "case_scoped",
+        "material_match": (claim_family is None or not document_families or claim_family in document_families),
+        "document_material_families": document_families,
     }

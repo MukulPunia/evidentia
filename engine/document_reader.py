@@ -92,4 +92,3 @@ def attach_pdf_source(
     )
 
     return artifact
-    

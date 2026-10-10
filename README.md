@@ -1,42 +1,45 @@
 # Evidentia
 
-## Evidence Supportability Engine
+Evidentia checks whether documents support a recycling claim. It reads uploaded PDFs, checks extracted details against the source pages, and applies clear calculation rules. A reviewer makes the final decision; the app does not declare fraud.
 
-Evidentia tests whether a submitted evidence package can support a claimed recycling event.
+## Run locally
 
-> **Traceability records what was submitted. Evidentia tests what that evidence can actually support.**
+1. Install Python 3.11 or newer.
+2. From this folder, install packages:
 
-Built as a HackDays 2.O prototype with a Gemini-powered evidence analysis pipeline.
+   ```bash
+   python -m pip install -r requirements.txt
+   ```
 
-## What it does
+3. Start the app:
 
-Evidentia takes:
+   ```bash
+   python -m uvicorn backend.main:app --reload
+   ```
 
-- a structured recycling claim
-- supporting documents such as certificates, invoices, manifests, weighbridge records, and facility records
+4. Open http://127.0.0.1:8000. The first start creates the local database and a sample case automatically.
 
-It then:
+## AI setup (optional)
 
-1. Screens the submitted files through an evidence intake gate.
-2. Uses Gemini for source-grounded extraction from messy PDFs and scanned evidence.
-3. Validates extracted facts against their original sources.
-4. Applies deterministic evidence and constraint logic.
-5. Tracks provenance and correlated evidence.
-6. Builds a case-scoped constraint graph.
-7. Produces an evidence support envelope and identifies the binding constraint.
-8. Uses Gemini again for bounded multimodal reconciliation and review reasoning.
-9. Generates an evidence resolution path and replayable audit result.
+The sample review can run in demo mode without an API key. For live Gemini extraction, copy `.env.example` to `.env`, set `GEMINI_API_KEY`, and restart the app. Keep your key private.
 
-Gemini does not make the final quantitative decision. Deterministic backend logic remains authoritative for calculations and hard constraints.
+## Tests
 
-## Demo
+Run the project tests with:
 
-The included synthetic evidence pack demonstrates a claim of **20.0 t**.
+```bash
+python -m pytest -q
+```
 
-### Baseline
+Uploaded PDFs and the local database are created under `data/` when you run the app. They are not bundled. The example evidence PDFs in `data/evidence/` are included.
+## Evidence-safety fixes and human-readable export
 
-```text
-Claimed:            20.0 t
-Evidence-supported: 11.2 t
-Final supportable:   8.0 t
-Binding constraint: processing capacity
+The release identified by `/api/health` as `2026.10.10-evidence-scope-pdf-1` includes:
+
+- Claim-material scope checks before AI extraction; explicitly unrelated documents are excluded from that claim rather than silently persisted as evidence.
+- Quantity calculations begin at zero supported tonnes unless eligible, validated transport or receipt quantity evidence is present. A claim's own amount is not treated as evidence.
+- Historical date and reporting-period parsing with the selected facility location used only as a numeric-date-format hint. A contract or publication date is not automatically a shipment date.
+- Charts and evidence graphs use the document categories and graph links returned by the analysis, not decorative sample values.
+- `POST /api/report.pdf` accepts an analysis-result JSON body and returns a plain-English PDF explaining the claim, eligible quantities, source records, time-period checks, coverage, findings and review steps. Both report-download controls use this endpoint.
+
+Run the test suite with `python -m pytest tests -q`. The release test includes the wrong-material upload path and readable PDF output. Use a separate test case when evaluating unrelated evidence; do not mix unrelated claim material into a live business case.

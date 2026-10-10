@@ -1,3 +1,4 @@
+
 from backend.main import SCENARIOS
 from engine.provenance import build_provenance_summary
 
@@ -9,7 +10,9 @@ def test_baseline_provenance_groups_correlated_documents():
 
     assert result["document_count"] == 6
     assert result["lineage_group_count"] == 4
-    assert result["independence_ratio"] == 0.667
+    assert result["lineage_group_ratio"] == 0.667
+    assert result["independence_ratio"] is None
+    assert result["independence_status"] == "not_established"
 
     correlated = result["correlated_documents"]
 

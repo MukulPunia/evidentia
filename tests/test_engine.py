@@ -1,30 +1,135 @@
-from fastapi.testclient import TestClient
-from backend.main import app
 
-client = TestClient(app)
+from copy import deepcopy
+
+import pytest
+from fastapi.testclient import TestClient
+
+import backend.main as main
+from gemini.service import demo_extraction
+
+
+def prepare_synthetic_evidence(artifacts):
+    """Prepare deterministic, source-grounded evidence for unit tests."""
+    prepared = deepcopy(artifacts)
+
+    for artifact in prepared:
+        artifact.metadata = dict(artifact.metadata or {})
+        artifact.metadata.pop("period_check", None)
+
+        source_text = artifact.text or ""
+
+        # Predefined scenario fixtures without dates represent this
+        # test claim period. Real uploaded files are not modified here.
+        if not any(
+            date in source_text
+            for date in ("2026-08-01", "2026-08-02")
+        ):
+            source_text += (
+                "\nEvidence period: 2026-08-01 to 2026-08-02"
+            )
+
+        artifact.text = source_text
+        artifact.metadata["source_pages"] = [
+            {"page": 1, "text": source_text}
+        ]
+        artifact.metadata["page_count"] = 1
+
+    return prepared
+
+
+def stub_reasoning(_payload):
+    """Return predictable reasoning without a live Gemini request."""
+    return {
+        "status": "test_stub",
+        "summary": "Deterministic test response.",
+        "alternative_explanations": [],
+        "recommended_actions": [],
+    }
+
+
+@pytest.fixture(autouse=True)
+def use_deterministic_ai(monkeypatch):
+    monkeypatch.setattr(
+        main,
+        "extract_facts_with_gemini",
+        demo_extraction,
+    )
+    monkeypatch.setattr(
+        main,
+        "reason_with_gemini",
+        stub_reasoning,
+    )
+    monkeypatch.setattr(
+        main,
+        "attach_local_evidence",
+        prepare_synthetic_evidence,
+    )
+
+
+client = TestClient(main.app)
+
 
 def test_baseline_math_and_binding_constraint():
-    d = client.post('/api/analyze', json={'scenario':'baseline'}).json()
-    e = d['envelope']
-    assert e['claimed_t'] == 20.0
-    assert e['evidence_supported_t'] == 11.2
-    assert e['final_supportable_t'] == 8.0
-    assert e['binding_constraint'] == 'processing capacity'
-    assert e['custody_gap_t'] == 7.2
-    assert e['receipt_conflict'] is True
+    response = client.post(
+        "/api/analyze",
+        json={"scenario": "baseline"},
+    )
+    assert response.status_code == 200
+
+    envelope = response.json()["envelope"]
+
+    assert envelope["claimed_t"] == 20.0
+    assert envelope["evidence_supported_t"] == 11.2
+    assert envelope["final_supportable_t"] == 8.0
+    assert envelope["binding_constraint"] == "processing capacity"
+    assert envelope["custody_gap_t"] == 7.2
+    assert envelope["receipt_conflict"] is True
+
 
 def test_manifest_does_not_change_final_support():
-    d0 = client.post('/api/analyze', json={'scenario':'baseline'}).json()
-    d1 = client.post('/api/analyze', json={'scenario':'after_manifest'}).json()
-    assert d0['envelope']['final_supportable_t'] == d1['envelope']['final_supportable_t'] == 8.0
-    assert any(x['artifact_id']=='MAN-03' and x['state']=='verified' for x in d1['grounding'])
+    baseline = client.post(
+        "/api/analyze",
+        json={"scenario": "baseline"},
+    )
+    with_manifest = client.post(
+        "/api/analyze",
+        json={"scenario": "after_manifest"},
+    )
+
+    assert baseline.status_code == 200
+    assert with_manifest.status_code == 200
+
+    d0 = baseline.json()
+    d1 = with_manifest.json()
+
+    assert (
+        d0["envelope"]["final_supportable_t"]
+        == d1["envelope"]["final_supportable_t"]
+        == 8.0
+    )
+
+    assert any(
+        item["artifact_id"] == "MAN-03"
+        and item["state"] == "verified"
+        for item in d1["grounding"]
+    )
+
 
 def test_shift_record_raises_supportable_quantity_to_transport_evidence():
-    d = client.post('/api/analyze', json={'scenario':'after_shift_record'}).json()
-    e = d['envelope']
-    assert e['final_supportable_t'] == 11.2
-    assert e['binding_constraint'] == 'transport/custody evidence'
+    response = client.post(
+        "/api/analyze",
+        json={"scenario": "after_shift_record"},
+    )
+    assert response.status_code == 200
+
+    envelope = response.json()["envelope"]
+
+    assert envelope["final_supportable_t"] == 11.2
+    assert (
+        envelope["binding_constraint"]
+        == "transport/custody evidence"
+    )
 
 
 def test_health():
-    assert client.get('/api/health').json()['status'] == 'ok'
+    assert client.get("/api/health").json()["status"] == "ok"
