@@ -805,10 +805,17 @@ async def analyze_upload(
             status_code=400,
             detail='At least one evidence document is required.',
         )
+    # Never silently attach a new upload to a fallback/demo case. Real evidence
+    # must be explicitly scoped to the case and claim selected by the reviewer.
+    if not case_id.strip() or not claim_id.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Select a case and claim before analyzing evidence.",
+        )
     case_record, claim_record, claim = resolve_case_and_claim(
         session,
-        case_id.strip() or None,
-        claim_id.strip() or None,
+        case_id.strip(),
+        claim_id.strip(),
     )
     dossier_id = __import__('uuid').uuid4().hex
     artifacts: list[Artifact] = []
