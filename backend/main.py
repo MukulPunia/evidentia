@@ -37,6 +37,7 @@ from db.schema import Artifact as DbArtifact, Case as DbCase, Claim as DbClaim, 
 from db.store import add_fact, get_or_create_node, link_nodes, upsert_artifact
 from backend.database import get_db
 from engine.models import Artifact, Claim, Fact
+from engine.demo_scenarios import SCENARIOS
 from engine.validator import (
     validate_fact,
     validate_extraction_coverage,
@@ -122,73 +123,6 @@ app.openapi = custom_openapi
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=False, allow_methods=['*'], allow_headers=['*'])
 class ScenarioRequest(BaseModel):
     scenario: str = 'baseline'
-SCENARIOS = {
-    'baseline': [
-        Artifact(
-    'CERT-01',
-    'certificate',
-    'recycling_certificate.pdf',
-    'claimant_recycler',
-    'GreenLoop Recycling',
-    'Certified quantity: 20.0 t',
-    derived_from='DEC-01',
-),
-        Artifact('INV-01','invoice','recycler_invoice.pdf','claimant_recycler','GreenLoop Recycling','Invoice quantity: 20.0 t', derived_from='DEC-01'),
-        Artifact('DEC-01','declaration','recycler_declaration.pdf','claimant_recycler','GreenLoop Recycling','Recycler declaration: 20.0 t'),
-        Artifact('MAN-01','transport_manifest','transport_manifest.pdf','counterparty','MoveFast Logistics','Net transported quantity: 11.2 t'),
-        Artifact('WB-01','weighbridge','weighbridge_scan.pdf','independent_system','WeighBridge System','Net weight: 18.4 t'),
-        Artifact('FAC-01','facility_profile','facility_profile.pdf','claimant_recycler','GreenLoop Recycling','Declared processing capacity during period: 8.0 t'),
-    ],
-    'after_manifest': [
-       Artifact(
-    'CERT-01',
-    'certificate',
-    'recycling_certificate.pdf',
-    'claimant_recycler',
-    'GreenLoop Recycling',
-    'Certified quantity: 20.0 t',
-    derived_from='DEC-01',
-),
-        Artifact('INV-01','invoice','recycler_invoice.pdf','claimant_recycler','GreenLoop Recycling','Invoice quantity: 20.0 t', derived_from='DEC-01'),
-        Artifact('DEC-01','declaration','recycler_declaration.pdf','claimant_recycler','GreenLoop Recycling','Recycler declaration: 20.0 t'),
-        Artifact('MAN-01','transport_manifest','transport_manifest.pdf','counterparty','MoveFast Logistics','Net transported quantity: 11.2 t'),
-        Artifact('MAN-03','transport_manifest','transport_manifest_03.pdf','counterparty','MoveFast Logistics','Route addendum for Manifest 01; linked quantity: 11.2 t', derived_from='MAN-01'),
-        Artifact('WB-01','weighbridge','weighbridge_scan.pdf','independent_system','WeighBridge System','Net weight: 18.4 t'),
-        Artifact('FAC-01','facility_profile','facility_profile.pdf','claimant_recycler','GreenLoop Recycling','Declared processing capacity during period: 8.0 t'),
-    ],
-    'after_shift_record': [
-        Artifact(
-    'CERT-01',
-    'certificate',
-    'recycling_certificate.pdf',
-    'claimant_recycler',
-    'GreenLoop Recycling',
-    'Certified quantity: 20.0 t',
-    derived_from='DEC-01',
-),
-        Artifact('INV-01','invoice','recycler_invoice.pdf','claimant_recycler','GreenLoop Recycling','Invoice quantity: 20.0 t', derived_from='DEC-01'),
-        Artifact('DEC-01','declaration','recycler_declaration.pdf','claimant_recycler','GreenLoop Recycling','Recycler declaration: 20.0 t'),
-        Artifact('MAN-01','transport_manifest','transport_manifest.pdf','counterparty','MoveFast Logistics','Net transported quantity: 11.2 t'),
-        Artifact('WB-01','weighbridge','weighbridge_scan.pdf','independent_system','WeighBridge System','Net weight: 18.4 t'),
-        Artifact('FAC-01','facility_profile','facility_profile.pdf','claimant_recycler','GreenLoop Recycling','Declared processing capacity during period: 8.0 t'),
-
-        Artifact(
-            'SHIFT-01',
-            'shift_record',
-            'processing_shift_record.pdf',
-            'independent_system',
-            'Plant Shift System',
-            'Facility: FAC-001. Valid processing shift evidence: '
-            '16.0 t capacity for stated period',
-            metadata={
-                'origin_verified': True,
-                'independence_verified': True,
-                'facility_link_verified': True,
-            },
-        ),
-
-    ],
-}
 def parse_quantity_t(value: str | None) -> float:
     """Convert a claim quantity such as '20 t' or '20000 kg' to tonnes."""
     if not value:
