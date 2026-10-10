@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,389 +8,2528 @@
   <link rel="icon" type="image/png" href="/static/favicon.png">
   <title>Evidentia — Recycling Evidence Review</title>
   <style>
-    :root{
-      --scale:1;
-      --bg:#f7fbfa; --bg-alt:#eef7f5; --surface:#ffffff; --surface-2:#f4faf8; --surface-3:#e9f4f1;
-      --text:#10212f; --muted:#5d7080; --line:#d6e4e0;
-      --primary:#229ed9; --primary-2:#34d399; --primary-soft:rgba(34,158,217,.10);
-      --green:#15966f; --green-soft:rgba(21,150,111,.11);
-      --blue:#1e72d8; --blue-soft:rgba(30,114,216,.11);
-      --purple:#7557d9; --purple-soft:rgba(117,87,217,.11);
-      --amber:#b96b00; --amber-soft:rgba(185,107,0,.11);
-      --red:#b12b35; --red-soft:rgba(177,43,53,.11);
-      --shadow-1:0 2px 6px rgba(28,49,66,.05),0 14px 38px rgba(28,49,66,.08);
-      --shadow-2:0 10px 28px rgba(30,79,90,.12),0 2px 6px rgba(30,79,90,.06);
-      --radius:18px;
-      --sidebar:240px;
+    :root {
+      --scale: 1;
+      --bg: #f7fbfa;
+      --bg-alt: #eef7f5;
+      --surface: #ffffff;
+      --surface-2: #f4faf8;
+      --surface-3: #e9f4f1;
+      --text: #10212f;
+      --muted: #5d7080;
+      --line: #d6e4e0;
+      --primary: #229ed9;
+      --primary-2: #34d399;
+      --primary-soft: rgba(34, 158, 217, .10);
+      --green: #15966f;
+      --green-soft: rgba(21, 150, 111, .11);
+      --blue: #1e72d8;
+      --blue-soft: rgba(30, 114, 216, .11);
+      --purple: #7557d9;
+      --purple-soft: rgba(117, 87, 217, .11);
+      --amber: #b96b00;
+      --amber-soft: rgba(185, 107, 0, .11);
+      --red: #b12b35;
+      --red-soft: rgba(177, 43, 53, .11);
+      --shadow-1: 0 2px 6px rgba(28, 49, 66, .05), 0 14px 38px rgba(28, 49, 66, .08);
+      --shadow-2: 0 10px 28px rgba(30, 79, 90, .12), 0 2px 6px rgba(30, 79, 90, .06);
+      --radius: 18px;
+      --sidebar: 240px;
     }
-    html{font-size:calc(16px * var(--scale));scroll-behavior:smooth}
-    *{box-sizing:border-box}
-    body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg-alt));color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
-    body.dark{
-      --bg:#0b1725;--bg-alt:#0e1f30;--surface:#112235;--surface-2:#162a3f;--surface-3:#193148;
-      --text:#eef6ff;--muted:#9fb3c6;--line:#294055;
-      --primary:#229ed9;--primary-2:#39e0a2;--primary-soft:rgba(34,158,217,.15);
-      --green:#43e7aa;--green-soft:rgba(67,231,170,.13);--blue:#5bb6ff;--blue-soft:rgba(91,182,255,.13);
-      --purple:#aa93ff;--purple-soft:rgba(170,147,255,.13);--amber:#ffbd66;--amber-soft:rgba(255,189,102,.13);
-      --red:#ff7c84;--red-soft:rgba(255,124,132,.13);
-      --shadow-1:0 2px 10px rgba(0,0,0,.25),0 18px 40px rgba(0,0,0,.26);
-      --shadow-2:0 12px 32px rgba(0,0,0,.26),0 2px 7px rgba(0,0,0,.2)
+
+    html {
+      font-size: calc(16px * var(--scale));
+      scroll-behavior: smooth
     }
-    body.high-contrast{--line:#7890a4;--muted:#d7e2ec;--text:#ffffff;--surface:#07111d;--surface-2:#0b1724;--surface-3:#102238;--primary:#6fd3ff;--primary-2:#6ff0c0;--green:#6ff0c0;--blue:#83caff;--purple:#c5b8ff;--amber:#ffd084;--red:#ff9ca3}
-    body.light.high-contrast{--line:#415a70;--muted:#31475c;--text:#071421;--surface:#ffffff;--surface-2:#f7fbff;--surface-3:#edf4fa;--primary:#0b72aa;--primary-2:#007f56;--green:#007553;--blue:#075eac;--purple:#5432b4;--amber:#8a4f00;--red:#9b1e27}
-    button,input,select{font:inherit}
-    button{color:inherit}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    .app{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);min-height:100vh}
-    .sidebar{position:sticky;top:0;height:100vh;padding:1rem .85rem;border-right:1px solid var(--line);background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(18px);display:flex;flex-direction:column;z-index:30}
-    .brand{display:flex;align-items:center;gap:.7rem;padding:.35rem .45rem 1.1rem}
-    .brand-mark{width:2.65rem;height:2.65rem;flex:0 0 auto;filter:drop-shadow(0 7px 15px rgba(34,158,217,.25))}.brand-mark img,.hero-logo img{width:100%;height:100%;object-fit:contain;display:block}
-    .brand-word{font-size:1.05rem;font-weight:900;letter-spacing:.045em}.brand-sub{font-size:.68rem;color:var(--muted);margin-top:.12rem}
-    .nav{display:grid;gap:.32rem}
-    .nav button,.side-bottom button{display:flex;align-items:center;gap:.7rem;width:100%;padding:.72rem .76rem;border-radius:.8rem;border:1px solid transparent;background:transparent;color:var(--muted);cursor:pointer;text-align:left;transition:transform .18s ease,background .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease}
-    .nav button:hover,.side-bottom button:hover{background:var(--primary-soft);color:var(--text);transform:translateX(2px)}
-    .nav button.active{background:linear-gradient(135deg,var(--primary-soft),var(--green-soft));border-color:color-mix(in srgb,var(--primary) 34%,var(--line));color:var(--text);box-shadow:var(--shadow-1)}
-    .nav-icon{width:1.35rem;text-align:center;font-size:1rem}
-    .sidebar-spacer{flex:1}
-    .gemini-card,.system-card{border:1px solid var(--line);border-radius:1rem;padding:.85rem;background:linear-gradient(180deg,var(--surface),var(--surface-2));box-shadow:var(--shadow-1);margin-bottom:.7rem}
-    .gemini-title,.system-title{font-weight:850;font-size:.82rem}.gemini-body,.system-meta{color:var(--muted);font-size:.68rem;line-height:1.5;margin-top:.35rem}
-    .checks,.system-list{display:grid;gap:.38rem;margin-top:.65rem}.check,.system-row{display:flex;align-items:center;gap:.45rem;font-size:.68rem}.dot{width:.48rem;height:.48rem;border-radius:50%;background:var(--green);box-shadow:0 0 0 .2rem var(--green-soft)}
-    .main{padding:1.05rem 1.1rem 3rem;min-width:0}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.9rem}.crumb{font-size:.72rem;color:var(--muted)}.top-actions{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap}
-    .status,.icon-btn,.theme-btn,.scale-btn{border:1px solid var(--line);background:var(--surface);border-radius:.8rem;box-shadow:var(--shadow-1);padding:.55rem .7rem}.status{display:flex;align-items:center;gap:.45rem;font-size:.72rem;color:var(--muted)}.status strong{color:var(--text)}
-    .icon-btn,.theme-btn,.scale-btn{cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.icon-btn:hover,.theme-btn:hover,.scale-btn:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--primary) 40%,var(--line));box-shadow:var(--shadow-2)}
-    .hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:1.25rem;background:linear-gradient(120deg,var(--surface),color-mix(in srgb,var(--surface-2) 76%,var(--primary-soft)));box-shadow:var(--shadow-2);padding:1.45rem}
-    .hero:before{content:"";position:absolute;right:-5rem;top:-7rem;width:25rem;height:25rem;border-radius:50%;background:radial-gradient(circle,rgba(34,158,217,.15),transparent 65%);pointer-events:none}.hero:after{content:"";position:absolute;right:7rem;bottom:-7rem;width:20rem;height:20rem;border-radius:50%;background:radial-gradient(circle,rgba(52,211,153,.13),transparent 65%);pointer-events:none}
-    .hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(18rem,.7fr);gap:1.2rem;position:relative;z-index:1}.hero-brand{display:flex;gap:1rem;align-items:center}.hero-logo{width:4.9rem;height:4.9rem;flex:0 0 auto}.eyebrow{font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;font-weight:900;color:var(--green)}.hero h1{font-size:clamp(2.35rem,4.4vw,4.2rem);line-height:.94;margin:.12rem 0 .28rem;letter-spacing:-.055em}.hero h1 span{background:linear-gradient(90deg,var(--primary),var(--primary-2));-webkit-background-clip:text;background-clip:text;color:transparent}.hero-sub{margin:0;color:var(--muted);font-size:.88rem;line-height:1.5;max-width:52rem}.hero-question{margin:.7rem 0 0;font-size:1rem;font-weight:780;max-width:54rem}.quote{align-self:stretch;display:flex;flex-direction:column;justify-content:center;border:1px solid color-mix(in srgb,var(--primary) 25%,var(--line));background:color-mix(in srgb,var(--surface) 75%,transparent);border-radius:1rem;padding:1rem 1.1rem;box-shadow:var(--shadow-1)}.quote b{font-size:1.04rem;line-height:1.45}.quote span{margin-top:.45rem;font-size:.7rem;color:var(--muted)}
-    .hero-features{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin-top:1.1rem;padding-top:.95rem;border-top:1px solid var(--line)}.feature{display:flex;gap:.55rem;align-items:center;padding:.45rem}.feature-icon{width:2rem;height:2rem;display:grid;place-items:center;border-radius:.65rem;background:var(--primary-soft);border:1px solid color-mix(in srgb,var(--primary) 28%,var(--line));font-size:.85rem}.feature strong{font-size:.68rem;display:block}.feature span{font-size:.61rem;color:var(--muted);display:block;margin-top:.08rem}
-    .workspace{display:grid;grid-template-columns:minmax(0,1fr) 18.75rem;gap:1rem;margin-top:1rem}.panel{border:1px solid var(--line);border-radius:1rem;background:var(--surface);box-shadow:var(--shadow-1);overflow:hidden}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1rem 1rem .5rem}.panel-title{font-weight:880;font-size:.98rem}.panel-sub{font-size:.68rem;color:var(--muted);line-height:1.45;margin-top:.16rem}.panel-body{padding:.5rem 1rem 1rem}
-    .stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:.2rem;margin-bottom:.8rem}.step{position:relative;text-align:center;color:var(--muted);font-size:.62rem}.step:not(:last-child):after{content:"";position:absolute;top:.85rem;left:calc(50% + 1rem);right:calc(-50% + 1rem);height:2px;background:var(--line)}.step-dot{position:relative;z-index:1;width:1.8rem;height:1.8rem;border-radius:50%;display:grid;place-items:center;margin:0 auto .32rem;background:var(--surface-3);border:1px solid var(--line);transition:transform .2s ease,box-shadow .2s ease,background .2s ease}.step.active{color:var(--text)}.step.active .step-dot{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:white;box-shadow:0 0 0 .28rem var(--primary-soft),0 9px 22px rgba(34,158,217,.22);transform:translateY(-1px)}.step.done .step-dot{background:var(--green-soft);border-color:var(--green);color:var(--green)}.step.done:not(:last-child):after{background:color-mix(in srgb,var(--green) 42%,var(--line))}
-    .case-picker{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.55rem .75rem;margin:0 0 .85rem;padding:.8rem;border:1px solid var(--line);border-radius:.85rem;background:var(--surface-2)}.case-picker label{display:grid;gap:.3rem;font-size:.68rem;font-weight:800;color:var(--text)}.case-picker select{width:100%;min-width:0;border:1px solid var(--line);border-radius:.62rem;padding:.62rem .65rem;background:var(--surface);color:var(--text)}.case-summary{grid-column:1/-1;margin:0;color:var(--muted);font-size:.64rem;line-height:1.45}.case-picker select:focus{outline:2px solid var(--primary);outline-offset:2px}    .upload-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(15rem,.9fr);gap:.8rem}.dropzone{min-height:13rem;border:1.5px dashed color-mix(in srgb,var(--primary) 48%,var(--line));border-radius:.95rem;background:linear-gradient(180deg,var(--surface-2),color-mix(in srgb,var(--surface-3) 62%,transparent));display:grid;place-items:center;text-align:center;padding:1rem;transition:border-color .2s ease,transform .2s ease,background .2s ease}.dropzone.drag{border-color:var(--primary);background:var(--primary-soft);transform:scale(1.006)}.upload-cloud{font-size:2.45rem;color:var(--primary);filter:drop-shadow(0 7px 16px rgba(34,158,217,.22))}.drop-title{font-size:.98rem;font-weight:820;margin-top:.35rem}.drop-sub{font-size:.68rem;color:var(--muted);margin-top:.2rem}.choose{margin-top:.75rem;background:linear-gradient(135deg,var(--primary),var(--primary-2));color:white;border-radius:.75rem;padding:.65rem .9rem;font-weight:850;cursor:pointer;box-shadow:0 10px 22px rgba(34,158,217,.18);transition:transform .18s ease,box-shadow .18s ease}.choose:hover{transform:translateY(-2px);box-shadow:0 14px 26px rgba(34,158,217,.25)}
-    .files-wrap{min-width:0}.file-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem}.file-title{font-weight:820;font-size:.78rem}.tiny{font-size:.64rem;color:var(--muted)}.clear-btn{border:0;background:transparent;color:var(--muted);cursor:pointer;padding:.25rem}.clear-btn:hover{color:var(--text)}.file-list{display:grid;gap:.45rem;max-height:13rem;overflow:auto;padding-right:.15rem}.file-item{display:flex;align-items:center;justify-content:space-between;gap:.45rem;padding:.58rem .6rem;border:1px solid var(--line);border-radius:.72rem;background:var(--surface-2);animation:rise .28s ease}.file-left{display:flex;align-items:center;gap:.5rem;min-width:0}.file-badge{width:1.75rem;height:1.75rem;border-radius:.55rem;display:grid;place-items:center;background:var(--red-soft);color:var(--red);font-size:.55rem;font-weight:900;border:1px solid color-mix(in srgb,var(--red) 25%,var(--line))}.file-name{font-size:.68rem;font-weight:740;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.file-size{font-size:.58rem;color:var(--muted);margin-top:.1rem}.remove{border:0;background:transparent;color:var(--muted);cursor:pointer;padding:.25rem;border-radius:.45rem}.remove:hover{background:var(--red-soft);color:var(--red)}
-    .primary{width:100%;border:0;border-radius:.8rem;padding:.72rem 1rem;margin-top:.75rem;background:linear-gradient(90deg,var(--primary),var(--primary-2));color:white;font-weight:900;cursor:pointer;box-shadow:0 13px 28px rgba(34,158,217,.18);transition:transform .18s ease,box-shadow .18s ease,opacity .18s ease}.primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 17px 32px rgba(34,158,217,.25)}.primary:disabled{opacity:.42;cursor:not-allowed;box-shadow:none}.secondary{border:1px solid var(--line);background:var(--surface-2);padding:.62rem .78rem;border-radius:.7rem;cursor:pointer}.secondary:hover{border-color:color-mix(in srgb,var(--primary) 36%,var(--line));background:var(--primary-soft)}
-    .loading{display:none;margin-top:.7rem;padding:.7rem .85rem;border:1px solid color-mix(in srgb,var(--primary) 30%,var(--line));border-radius:.75rem;background:var(--primary-soft)}.loading-row{display:flex;align-items:center;gap:.7rem}.loader{width:1rem;height:1rem;border-radius:50%;border:2px solid color-mix(in srgb,var(--primary) 25%,transparent);border-top-color:var(--primary);animation:spin .8s linear infinite}.loading-stage{font-size:.7rem}.progress{height:.32rem;background:var(--surface-3);border-radius:999px;overflow:hidden;margin-top:.55rem}.progress-fill{height:100%;width:15%;border-radius:inherit;background:linear-gradient(90deg,var(--primary),var(--primary-2));transition:width .35s ease}
-    .error{display:none;margin-top:.7rem;padding:.75rem .85rem;border-radius:.75rem;border:1px solid color-mix(in srgb,var(--red) 45%,var(--line));background:var(--red-soft);color:var(--red);font-size:.7rem}
-    .side-stack{display:grid;gap:.8rem}.status-list{display:grid;gap:.5rem}.status-row{display:grid;grid-template-columns:1.25rem 1fr auto;gap:.45rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--line)}.status-row:last-child{border-bottom:0}.status-row .ico{color:var(--primary);text-align:center}.status-row strong{font-size:.68rem}.status-row span{font-size:.59rem;color:var(--muted);display:block;margin-top:.08rem}.tag{font-size:.56rem;font-weight:900;padding:.28rem .45rem;border-radius:999px;background:var(--surface-3);color:var(--muted);border:1px solid var(--line)}.tag.green{background:var(--green-soft);color:var(--green);border-color:color-mix(in srgb,var(--green) 25%,var(--line))}.tag.amber{background:var(--amber-soft);color:var(--amber);border-color:color-mix(in srgb,var(--amber) 25%,var(--line))}.tag.red{background:var(--red-soft);color:var(--red);border-color:color-mix(in srgb,var(--red) 25%,var(--line))}
-    .action-list{display:grid;gap:.42rem}.action-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.62rem .65rem;border:1px solid var(--line);background:var(--surface-2);border-radius:.72rem;cursor:pointer;text-align:left;transition:transform .18s ease,background .18s ease,border-color .18s ease}.action-btn:hover{transform:translateX(2px);background:var(--primary-soft);border-color:color-mix(in srgb,var(--primary) 32%,var(--line))}.action-btn strong{font-size:.67rem;display:block}.action-btn span{font-size:.59rem;color:var(--muted)}
-    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:1rem}.metric{padding:.9rem 1rem;position:relative;overflow:hidden}.metric:before{content:"";position:absolute;inset:auto -2rem -3rem auto;width:7rem;height:7rem;border-radius:50%;background:radial-gradient(circle,var(--accent-bg,rgba(34,158,217,.12)),transparent 66%)}.metric-label{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:850}.metric-value{font-size:2rem;font-weight:950;letter-spacing:-.05em;margin-top:.25rem}.metric-unit{font-size:.7rem;color:var(--muted)}.metric-note{font-size:.6rem;color:var(--muted);margin-top:.25rem}.m-claimed{--accent-bg:rgba(34,158,217,.13)}.m-supported{--accent-bg:rgba(117,87,217,.13)}.m-final{--accent-bg:rgba(21,150,111,.14)}.m-coverage{--accent-bg:rgba(185,107,0,.13)}
-    .result-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(18rem,.9fr);gap:.8rem;margin-top:.8rem}.binding{border-left:4px solid var(--amber);background:var(--amber-soft)}.binding .big{font-size:1.2rem;font-weight:900;color:var(--amber);margin-top:.3rem}.binding p{font-size:.68rem;line-height:1.5;color:var(--muted);margin:.3rem 0 0}.result-bar{height:.62rem;border-radius:999px;background:var(--surface-3);overflow:hidden;border:1px solid var(--line);margin-top:.7rem}.result-fill{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary-2));border-radius:inherit;transition:width .75s cubic-bezier(.2,.7,.2,1)}.pathline{font-size:.7rem;color:var(--muted);margin-top:.42rem}.pathline strong{color:var(--text)}
-    .tabs{display:flex;gap:.35rem;overflow:auto;padding:.85rem 0 .1rem}.tab{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:.58rem .75rem;border-radius:.7rem;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}.tab:hover{transform:translateY(-1px)}.tab.active{background:linear-gradient(135deg,var(--primary-soft),var(--green-soft));color:var(--text);border-color:color-mix(in srgb,var(--primary) 34%,var(--line));box-shadow:var(--shadow-1)}.tab-panel{display:none}.tab-panel.active{display:block;animation:fade .22s ease}
-    .chain{display:grid;gap:.5rem}.chain-item{display:grid;grid-template-columns:2rem minmax(0,1fr) auto;gap:.65rem;align-items:center;padding:.7rem .72rem;border:1px solid var(--line);border-radius:.8rem;background:var(--surface-2)}.chain-icon{width:2rem;height:2rem;border-radius:.62rem;display:grid;place-items:center;background:var(--blue-soft);color:var(--blue);font-size:.75rem}.chain-main strong{display:block;font-size:.72rem}.chain-main span{display:block;font-size:.59rem;color:var(--muted);margin-top:.08rem}.chain-meta{text-align:right}.chain-meta strong{font-size:.64rem}.chain-meta span{display:block;font-size:.56rem;color:var(--muted);margin-top:.1rem}
-    .facts-wrap{overflow:auto}.facts{width:100%;border-collapse:collapse}.facts th,.facts td{text-align:left;padding:.55rem .5rem;border-bottom:1px solid var(--line);font-size:.61rem;white-space:nowrap}.facts th{font-size:.54rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.facts td:first-child,.facts th:first-child{padding-left:0}.verified{color:var(--green);font-weight:820}.unverified{color:var(--red);font-weight:820}
-    .analytics{display:grid;grid-template-columns:minmax(14rem,.7fr) minmax(0,1.3fr);gap:.8rem}.donut{width:11rem;height:11rem;border-radius:50%;background:var(--surface-2);position:relative;margin:.4rem auto}.donut:after{content:"";position:absolute;inset:2.7rem;border-radius:50%;background:var(--surface)}.donut-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center;z-index:1}.donut-center b{font-size:1.55rem}.donut-center span{display:block;font-size:.58rem;color:var(--muted)}.legend{display:grid;gap:.42rem;margin-top:.75rem}.legend-row{display:flex;justify-content:space-between;gap:.5rem;font-size:.61rem}.legend-left{display:flex;align-items:center;gap:.4rem}.legend-dot{width:.55rem;height:.55rem;border-radius:50%}
-    .bars{display:grid;gap:.65rem}.bar-row{display:grid;grid-template-columns:7rem 1fr auto;gap:.55rem;align-items:center}.bar-label{font-size:.61rem;color:var(--muted)}.bar-track{height:.55rem;border-radius:999px;background:var(--surface-3);border:1px solid var(--line);overflow:hidden}.bar-fill{height:100%;border-radius:inherit;transition:width .7s ease}.bar-num{font-size:.58rem;color:var(--muted);min-width:4rem;text-align:right}
-    .graph-wrap{position:relative;min-height:25rem;border:1px solid var(--line);border-radius:1rem;background:linear-gradient(180deg,var(--surface-2),var(--surface));overflow:hidden}.graph-wrap svg{display:block;width:100%;height:25rem}.graph-node rect{fill:var(--surface);stroke:var(--line);stroke-width:1.2}.graph-node text{fill:var(--text);font-size:13px;font-weight:800}.graph-node .sub{fill:var(--muted);font-size:10px;font-weight:650}.edge{stroke:var(--line);stroke-width:2}.edge.support{stroke:color-mix(in srgb,var(--green) 78%,transparent)}.edge.conflict{stroke:var(--red);stroke-dasharray:6 6}.edge.constraint{stroke:var(--amber);stroke-dasharray:5 5}.graph-legend{display:flex;flex-wrap:wrap;gap:.8rem;padding:.75rem .85rem;border-top:1px solid var(--line);font-size:.6rem;color:var(--muted)}.legend-line{display:inline-flex;align-items:center;gap:.35rem}.legend-line i{width:1.2rem;height:2px;background:var(--line);display:block}.legend-line i.support{background:var(--green)}.legend-line i.conflict{background:var(--red);border-top:2px dashed var(--red);height:0}.legend-line i.constraint{background:var(--amber);border-top:2px dashed var(--amber);height:0}
-    .resolution-intro{padding:.75rem .85rem;border:1px solid color-mix(in srgb,var(--primary) 26%,var(--line));background:var(--primary-soft);border-radius:.8rem;margin-bottom:.65rem}.resolution-intro strong{font-size:.73rem}.resolution-intro p{margin:.25rem 0 0;font-size:.62rem;color:var(--muted);line-height:1.5}.resolution-list{display:grid;gap:.55rem}.resolution-card{padding:.8rem;border:1px solid var(--line);border-radius:.8rem;background:var(--surface-2)}.resolution-top{display:flex;justify-content:space-between;gap:.7rem;align-items:start}.resolution-name{font-weight:900;font-size:.73rem}.resolution-stage{font-size:.56rem;color:var(--muted);margin-top:.1rem}.resolution-badge{font-size:.58rem;padding:.28rem .45rem;border-radius:999px;background:var(--green-soft);color:var(--green);border:1px solid color-mix(in srgb,var(--green) 24%,var(--line))}.resolution-copy{margin-top:.5rem;font-size:.62rem;line-height:1.5;color:var(--muted)}.resolution-copy b{color:var(--text)}
-    .findings{display:grid;gap:.55rem}.finding{display:grid;grid-template-columns:2rem minmax(0,1fr) auto;gap:.6rem;align-items:start;padding:.75rem;border:1px solid var(--line);border-radius:.8rem;background:var(--surface-2)}.finding-icon{width:2rem;height:2rem;border-radius:.6rem;display:grid;place-items:center;background:var(--amber-soft);color:var(--amber);font-weight:900}.finding.red .finding-icon{background:var(--red-soft);color:var(--red)}.finding.green .finding-icon{background:var(--green-soft);color:var(--green)}.finding strong{font-size:.7rem}.finding p{margin:.18rem 0 0;color:var(--muted);font-size:.61rem;line-height:1.45}
-    .replay{display:grid;gap:.55rem}.replay-row{display:grid;grid-template-columns:minmax(11rem,.7fr) minmax(0,1fr) 5rem;gap:.7rem;align-items:center;padding:.7rem .75rem;border:1px solid var(--line);border-radius:.8rem;background:var(--surface-2)}.replay-name{font-size:.68rem;font-weight:900}.replay-sub{font-size:.56rem;color:var(--muted);margin-top:.08rem}.replay-main{font-size:.61rem;color:var(--muted);line-height:1.45}.replay-main strong{color:var(--text)}.replay-change{text-align:right;font-weight:900;font-size:.68rem}.zero{color:var(--amber)}.positive{color:var(--green)}
-    .access-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.45rem}.access-grid button{padding:.62rem .7rem;border:1px solid var(--line);background:var(--surface-2);border-radius:.7rem;cursor:pointer;font-size:.64rem}.access-grid button:hover{border-color:color-mix(in srgb,var(--primary) 36%,var(--line));background:var(--primary-soft)}
-    .footer{text-align:center;color:var(--muted);font-size:.58rem;margin-top:1.2rem}
-    .toast{position:fixed;right:1rem;bottom:1rem;max-width:23rem;padding:.7rem .82rem;border-radius:.75rem;background:var(--text);color:var(--bg);box-shadow:var(--shadow-2);font-size:.65rem;opacity:0;transform:translateY(.6rem);pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:100}.toast.show{opacity:1;transform:translateY(0)}
-    .empty{padding:1.2rem;text-align:center;color:var(--muted);font-size:.65rem;border:1px dashed var(--line);border-radius:.8rem}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
-    :focus-visible{outline:3px solid color-mix(in srgb,var(--primary) 70%,white);outline-offset:2px}
-    @keyframes spin{to{transform:rotate(360deg)}}@keyframes rise{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-    @media (max-width:1150px){.app{grid-template-columns:4.5rem 1fr}.brand-word,.brand-sub,.nav-label,.gemini-card,.system-card{display:none}.brand{justify-content:center}.workspace{grid-template-columns:1fr}.side-stack{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-grid,.result-grid{grid-template-columns:1fr}.quote{justify-self:start;width:100%}.hero-features{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:850px){.main{padding:.7rem}.metrics{grid-template-columns:repeat(2,1fr)}.case-picker,.upload-layout,.analytics{grid-template-columns:1fr}.topbar{align-items:flex-start;flex-direction:column}.hero-brand{align-items:flex-start}.hero-logo{width:3.6rem;height:3.6rem}.graph-wrap,.graph-wrap svg{height:22rem}.side-stack{grid-template-columns:1fr}.replay-row{grid-template-columns:1fr}.replay-change{text-align:left}.nav button{justify-content:center}.step{font-size:.56rem}}
-    @media (max-width:560px){.metrics{grid-template-columns:1fr}.hero-features{grid-template-columns:1fr}.app{grid-template-columns:1fr}.sidebar{position:static;height:auto;flex-direction:row;align-items:center;padding:.65rem;border-right:0;border-bottom:1px solid var(--line)}.sidebar .sidebar-spacer,.sidebar .gemini-card,.sidebar .system-card{display:none}.brand-word,.brand-sub{display:block}.brand{padding:0;margin-right:.5rem}.nav{display:flex;overflow:auto}.nav button{width:auto;white-space:nowrap}.nav-label{display:inline}.nav-icon{width:auto}.top-actions{width:100%}.status{flex:1}}
-    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
-    @media print{body{background:#fff;color:#000}.sidebar,.topbar,.top-actions,.tabs,.access-grid,.toast,.footer{display:none!important}.main{padding:0}.panel,.hero,.metric{box-shadow:none;border:1px solid #aaa}.hero{break-inside:avoid}}
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, var(--bg), var(--bg-alt));
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      min-height: 100vh
+    }
+
+    body.dark {
+      --bg: #0b1725;
+      --bg-alt: #0e1f30;
+      --surface: #112235;
+      --surface-2: #162a3f;
+      --surface-3: #193148;
+      --text: #eef6ff;
+      --muted: #9fb3c6;
+      --line: #294055;
+      --primary: #229ed9;
+      --primary-2: #39e0a2;
+      --primary-soft: rgba(34, 158, 217, .15);
+      --green: #43e7aa;
+      --green-soft: rgba(67, 231, 170, .13);
+      --blue: #5bb6ff;
+      --blue-soft: rgba(91, 182, 255, .13);
+      --purple: #aa93ff;
+      --purple-soft: rgba(170, 147, 255, .13);
+      --amber: #ffbd66;
+      --amber-soft: rgba(255, 189, 102, .13);
+      --red: #ff7c84;
+      --red-soft: rgba(255, 124, 132, .13);
+      --shadow-1: 0 2px 10px rgba(0, 0, 0, .25), 0 18px 40px rgba(0, 0, 0, .26);
+      --shadow-2: 0 12px 32px rgba(0, 0, 0, .26), 0 2px 7px rgba(0, 0, 0, .2)
+    }
+
+    body.high-contrast {
+      --line: #7890a4;
+      --muted: #d7e2ec;
+      --text: #ffffff;
+      --surface: #07111d;
+      --surface-2: #0b1724;
+      --surface-3: #102238;
+      --primary: #6fd3ff;
+      --primary-2: #6ff0c0;
+      --green: #6ff0c0;
+      --blue: #83caff;
+      --purple: #c5b8ff;
+      --amber: #ffd084;
+      --red: #ff9ca3
+    }
+
+    body.light.high-contrast {
+      --line: #415a70;
+      --muted: #31475c;
+      --text: #071421;
+      --surface: #ffffff;
+      --surface-2: #f7fbff;
+      --surface-3: #edf4fa;
+      --primary: #0b72aa;
+      --primary-2: #007f56;
+      --green: #007553;
+      --blue: #075eac;
+      --purple: #5432b4;
+      --amber: #8a4f00;
+      --red: #9b1e27
+    }
+
+    button,
+    input,
+    select {
+      font: inherit
+    }
+
+    button {
+      color: inherit
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: var(--sidebar) minmax(0, 1fr);
+      min-height: 100vh
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 1rem .85rem;
+      border-right: 1px solid var(--line);
+      background: color-mix(in srgb, var(--surface) 92%, transparent);
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      z-index: 30
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      padding: .35rem .45rem 1.1rem
+    }
+
+    .brand-mark {
+      width: 2.65rem;
+      height: 2.65rem;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 7px 15px rgba(34, 158, 217, .25))
+    }
+
+    .brand-mark img,
+    .hero-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block
+    }
+
+    .brand-word {
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: .045em
+    }
+
+    .brand-sub {
+      font-size: .68rem;
+      color: var(--muted);
+      margin-top: .12rem
+    }
+
+    .nav {
+      display: grid;
+      gap: .32rem
+    }
+
+    .nav button,
+    .side-bottom button {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      width: 100%;
+      padding: .72rem .76rem;
+      border-radius: .8rem;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      text-align: left;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease
+    }
+
+    .nav button:hover,
+    .side-bottom button:hover {
+      background: var(--primary-soft);
+      color: var(--text);
+      transform: translateX(2px)
+    }
+
+    .nav button.active {
+      background: linear-gradient(135deg, var(--primary-soft), var(--green-soft));
+      border-color: color-mix(in srgb, var(--primary) 34%, var(--line));
+      color: var(--text);
+      box-shadow: var(--shadow-1)
+    }
+
+    .nav-icon {
+      width: 1.35rem;
+      text-align: center;
+      font-size: 1rem
+    }
+
+    .sidebar-spacer {
+      flex: 1
+    }
+
+    .gemini-card,
+    .system-card {
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      padding: .85rem;
+      background: linear-gradient(180deg, var(--surface), var(--surface-2));
+      box-shadow: var(--shadow-1);
+      margin-bottom: .7rem
+    }
+
+    .gemini-title,
+    .system-title {
+      font-weight: 850;
+      font-size: .82rem
+    }
+
+    .gemini-body,
+    .system-meta {
+      color: var(--muted);
+      font-size: .68rem;
+      line-height: 1.5;
+      margin-top: .35rem
+    }
+
+    .checks,
+    .system-list {
+      display: grid;
+      gap: .38rem;
+      margin-top: .65rem
+    }
+
+    .check,
+    .system-row {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      font-size: .68rem
+    }
+
+    .dot {
+      width: .48rem;
+      height: .48rem;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 .2rem var(--green-soft)
+    }
+
+    .main {
+      padding: 1.05rem 1.1rem 3rem;
+      min-width: 0
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: .9rem
+    }
+
+    .crumb {
+      font-size: .72rem;
+      color: var(--muted)
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      flex-wrap: wrap
+    }
+
+    .status,
+    .icon-btn,
+    .theme-btn,
+    .scale-btn {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: .8rem;
+      box-shadow: var(--shadow-1);
+      padding: .55rem .7rem
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      font-size: .72rem;
+      color: var(--muted)
+    }
+
+    .status strong {
+      color: var(--text)
+    }
+
+    .icon-btn,
+    .theme-btn,
+    .scale-btn {
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease
+    }
+
+    .icon-btn:hover,
+    .theme-btn:hover,
+    .scale-btn:hover {
+      transform: translateY(-1px);
+      border-color: color-mix(in srgb, var(--primary) 40%, var(--line));
+      box-shadow: var(--shadow-2)
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 1.25rem;
+      background: linear-gradient(120deg, var(--surface), color-mix(in srgb, var(--surface-2) 76%, var(--primary-soft)));
+      box-shadow: var(--shadow-2);
+      padding: 1.45rem
+    }
+
+    .hero:before {
+      content: "";
+      position: absolute;
+      right: -5rem;
+      top: -7rem;
+      width: 25rem;
+      height: 25rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(34, 158, 217, .15), transparent 65%);
+      pointer-events: none
+    }
+
+    .hero:after {
+      content: "";
+      position: absolute;
+      right: 7rem;
+      bottom: -7rem;
+      width: 20rem;
+      height: 20rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(52, 211, 153, .13), transparent 65%);
+      pointer-events: none
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(18rem, .7fr);
+      gap: 1.2rem;
+      position: relative;
+      z-index: 1
+    }
+
+    .hero-brand {
+      display: flex;
+      gap: 1rem;
+      align-items: center
+    }
+
+    .hero-logo {
+      width: 4.9rem;
+      height: 4.9rem;
+      flex: 0 0 auto
+    }
+
+    .eyebrow {
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      font-weight: 900;
+      color: var(--green)
+    }
+
+    .hero h1 {
+      font-size: clamp(2.35rem, 4.4vw, 4.2rem);
+      line-height: .94;
+      margin: .12rem 0 .28rem;
+      letter-spacing: -.055em
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--primary), var(--primary-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent
+    }
+
+    .hero-sub {
+      margin: 0;
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.5;
+      max-width: 52rem
+    }
+
+    .hero-question {
+      margin: .7rem 0 0;
+      font-size: 1rem;
+      font-weight: 780;
+      max-width: 54rem
+    }
+
+    .quote {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--line));
+      background: color-mix(in srgb, var(--surface) 75%, transparent);
+      border-radius: 1rem;
+      padding: 1rem 1.1rem;
+      box-shadow: var(--shadow-1)
+    }
+
+    .quote b {
+      font-size: 1.04rem;
+      line-height: 1.45
+    }
+
+    .quote span {
+      margin-top: .45rem;
+      font-size: .7rem;
+      color: var(--muted)
+    }
+
+    .hero-features {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .4rem;
+      margin-top: 1.1rem;
+      padding-top: .95rem;
+      border-top: 1px solid var(--line)
+    }
+
+    .feature {
+      display: flex;
+      gap: .55rem;
+      align-items: center;
+      padding: .45rem
+    }
+
+    .feature-icon {
+      width: 2rem;
+      height: 2rem;
+      display: grid;
+      place-items: center;
+      border-radius: .65rem;
+      background: var(--primary-soft);
+      border: 1px solid color-mix(in srgb, var(--primary) 28%, var(--line));
+      font-size: .85rem
+    }
+
+    .feature strong {
+      font-size: .68rem;
+      display: block
+    }
+
+    .feature span {
+      font-size: .61rem;
+      color: var(--muted);
+      display: block;
+      margin-top: .08rem
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 18.75rem;
+      gap: 1rem;
+      margin-top: 1rem
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: var(--surface);
+      box-shadow: var(--shadow-1);
+      overflow: hidden
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1rem .5rem
+    }
+
+    .panel-title {
+      font-weight: 880;
+      font-size: .98rem
+    }
+
+    .panel-sub {
+      font-size: .68rem;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-top: .16rem
+    }
+
+    .panel-body {
+      padding: .5rem 1rem 1rem
+    }
+
+    .stepper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .2rem;
+      margin-bottom: .8rem
+    }
+
+    .step {
+      position: relative;
+      text-align: center;
+      color: var(--muted);
+      font-size: .62rem
+    }
+
+    .step:not(:last-child):after {
+      content: "";
+      position: absolute;
+      top: .85rem;
+      left: calc(50% + 1rem);
+      right: calc(-50% + 1rem);
+      height: 2px;
+      background: var(--line)
+    }
+
+    .step-dot {
+      position: relative;
+      z-index: 1;
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto .32rem;
+      background: var(--surface-3);
+      border: 1px solid var(--line);
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease
+    }
+
+    .step.active {
+      color: var(--text)
+    }
+
+    .step.active .step-dot {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      box-shadow: 0 0 0 .28rem var(--primary-soft), 0 9px 22px rgba(34, 158, 217, .22);
+      transform: translateY(-1px)
+    }
+
+    .step.done .step-dot {
+      background: var(--green-soft);
+      border-color: var(--green);
+      color: var(--green)
+    }
+
+    .step.done:not(:last-child):after {
+      background: color-mix(in srgb, var(--green) 42%, var(--line))
+    }
+
+    .case-picker {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: .55rem .75rem;
+      margin: 0 0 .85rem;
+      padding: .8rem;
+      border: 1px solid var(--line);
+      border-radius: .85rem;
+      background: var(--surface-2)
+    }
+
+    .case-picker label {
+      display: grid;
+      gap: .3rem;
+      font-size: .68rem;
+      font-weight: 800;
+      color: var(--text)
+    }
+
+    .case-picker select {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: .62rem;
+      padding: .62rem .65rem;
+      background: var(--surface);
+      color: var(--text)
+    }
+
+    .case-summary {
+      grid-column: 1/-1;
+      margin: 0;
+      color: var(--muted);
+      font-size: .64rem;
+      line-height: 1.45
+    }
+
+    .case-picker select:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px
+    }
+
+    .upload-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(15rem, .9fr);
+      gap: .8rem
+    }
+
+    .dropzone {
+      min-height: 13rem;
+      border: 1.5px dashed color-mix(in srgb, var(--primary) 48%, var(--line));
+      border-radius: .95rem;
+      background: linear-gradient(180deg, var(--surface-2), color-mix(in srgb, var(--surface-3) 62%, transparent));
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 1rem;
+      transition: border-color .2s ease, transform .2s ease, background .2s ease
+    }
+
+    .dropzone.drag {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      transform: scale(1.006)
+    }
+
+    .upload-cloud {
+      font-size: 2.45rem;
+      color: var(--primary);
+      filter: drop-shadow(0 7px 16px rgba(34, 158, 217, .22))
+    }
+
+    .drop-title {
+      font-size: .98rem;
+      font-weight: 820;
+      margin-top: .35rem
+    }
+
+    .drop-sub {
+      font-size: .68rem;
+      color: var(--muted);
+      margin-top: .2rem
+    }
+
+    .choose {
+      margin-top: .75rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      border-radius: .75rem;
+      padding: .65rem .9rem;
+      font-weight: 850;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(34, 158, 217, .18);
+      transition: transform .18s ease, box-shadow .18s ease
+    }
+
+    .choose:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 26px rgba(34, 158, 217, .25)
+    }
+
+    .files-wrap {
+      min-width: 0
+    }
+
+    .file-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: .45rem
+    }
+
+    .file-title {
+      font-weight: 820;
+      font-size: .78rem
+    }
+
+    .tiny {
+      font-size: .64rem;
+      color: var(--muted)
+    }
+
+    .clear-btn {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      padding: .25rem
+    }
+
+    .clear-btn:hover {
+      color: var(--text)
+    }
+
+    .file-list {
+      display: grid;
+      gap: .45rem;
+      max-height: 13rem;
+      overflow: auto;
+      padding-right: .15rem
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .45rem;
+      padding: .58rem .6rem;
+      border: 1px solid var(--line);
+      border-radius: .72rem;
+      background: var(--surface-2);
+      animation: rise .28s ease
+    }
+
+    .file-left {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      min-width: 0
+    }
+
+    .file-badge {
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: .55rem;
+      display: grid;
+      place-items: center;
+      background: var(--red-soft);
+      color: var(--red);
+      font-size: .55rem;
+      font-weight: 900;
+      border: 1px solid color-mix(in srgb, var(--red) 25%, var(--line))
+    }
+
+    .file-name {
+      font-size: .68rem;
+      font-weight: 740;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .file-size {
+      font-size: .58rem;
+      color: var(--muted);
+      margin-top: .1rem
+    }
+
+    .remove {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      padding: .25rem;
+      border-radius: .45rem
+    }
+
+    .remove:hover {
+      background: var(--red-soft);
+      color: var(--red)
+    }
+
+    .primary {
+      width: 100%;
+      border: 0;
+      border-radius: .8rem;
+      padding: .72rem 1rem;
+      margin-top: .75rem;
+      background: linear-gradient(90deg, var(--primary), var(--primary-2));
+      color: white;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 13px 28px rgba(34, 158, 217, .18);
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease
+    }
+
+    .primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 17px 32px rgba(34, 158, 217, .25)
+    }
+
+    .primary:disabled {
+      opacity: .42;
+      cursor: not-allowed;
+      box-shadow: none
+    }
+
+    .secondary {
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      padding: .62rem .78rem;
+      border-radius: .7rem;
+      cursor: pointer
+    }
+
+    .secondary:hover {
+      border-color: color-mix(in srgb, var(--primary) 36%, var(--line));
+      background: var(--primary-soft)
+    }
+
+    .loading {
+      display: none;
+      margin-top: .7rem;
+      padding: .7rem .85rem;
+      border: 1px solid color-mix(in srgb, var(--primary) 30%, var(--line));
+      border-radius: .75rem;
+      background: var(--primary-soft)
+    }
+
+    .loading-row {
+      display: flex;
+      align-items: center;
+      gap: .7rem
+    }
+
+    .loader {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      border: 2px solid color-mix(in srgb, var(--primary) 25%, transparent);
+      border-top-color: var(--primary);
+      animation: spin .8s linear infinite
+    }
+
+    .loading-stage {
+      font-size: .7rem
+    }
+
+    .progress {
+      height: .32rem;
+      background: var(--surface-3);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: .55rem
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 15%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--primary), var(--primary-2));
+      transition: width .35s ease
+    }
+
+    .error {
+      display: none;
+      margin-top: .7rem;
+      padding: .75rem .85rem;
+      border-radius: .75rem;
+      border: 1px solid color-mix(in srgb, var(--red) 45%, var(--line));
+      background: var(--red-soft);
+      color: var(--red);
+      font-size: .7rem
+    }
+
+    .side-stack {
+      display: grid;
+      gap: .8rem
+    }
+
+    .status-list {
+      display: grid;
+      gap: .5rem
+    }
+
+    .status-row {
+      display: grid;
+      grid-template-columns: 1.25rem 1fr auto;
+      gap: .45rem;
+      align-items: center;
+      padding: .5rem 0;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .status-row:last-child {
+      border-bottom: 0
+    }
+
+    .status-row .ico {
+      color: var(--primary);
+      text-align: center
+    }
+
+    .status-row strong {
+      font-size: .68rem
+    }
+
+    .status-row span {
+      font-size: .59rem;
+      color: var(--muted);
+      display: block;
+      margin-top: .08rem
+    }
+
+    .tag {
+      font-size: .56rem;
+      font-weight: 900;
+      padding: .28rem .45rem;
+      border-radius: 999px;
+      background: var(--surface-3);
+      color: var(--muted);
+      border: 1px solid var(--line)
+    }
+
+    .tag.green {
+      background: var(--green-soft);
+      color: var(--green);
+      border-color: color-mix(in srgb, var(--green) 25%, var(--line))
+    }
+
+    .tag.amber {
+      background: var(--amber-soft);
+      color: var(--amber);
+      border-color: color-mix(in srgb, var(--amber) 25%, var(--line))
+    }
+
+    .tag.red {
+      background: var(--red-soft);
+      color: var(--red);
+      border-color: color-mix(in srgb, var(--red) 25%, var(--line))
+    }
+
+    .action-list {
+      display: grid;
+      gap: .42rem
+    }
+
+    .action-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .6rem;
+      padding: .62rem .65rem;
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      border-radius: .72rem;
+      cursor: pointer;
+      text-align: left;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease
+    }
+
+    .action-btn:hover {
+      transform: translateX(2px);
+      background: var(--primary-soft);
+      border-color: color-mix(in srgb, var(--primary) 32%, var(--line))
+    }
+
+    .action-btn strong {
+      font-size: .67rem;
+      display: block
+    }
+
+    .action-btn span {
+      font-size: .59rem;
+      color: var(--muted)
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .75rem;
+      margin-top: 1rem
+    }
+
+    .metric {
+      padding: .9rem 1rem;
+      position: relative;
+      overflow: hidden
+    }
+
+    .metric:before {
+      content: "";
+      position: absolute;
+      inset: auto -2rem -3rem auto;
+      width: 7rem;
+      height: 7rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-bg, rgba(34, 158, 217, .12)), transparent 66%)
+    }
+
+    .metric-label {
+      font-size: .62rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 850
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 950;
+      letter-spacing: -.05em;
+      margin-top: .25rem
+    }
+
+    .metric-unit {
+      font-size: .7rem;
+      color: var(--muted)
+    }
+
+    .metric-note {
+      font-size: .6rem;
+      color: var(--muted);
+      margin-top: .25rem
+    }
+
+    .m-claimed {
+      --accent-bg: rgba(34, 158, 217, .13)
+    }
+
+    .m-supported {
+      --accent-bg: rgba(117, 87, 217, .13)
+    }
+
+    .m-final {
+      --accent-bg: rgba(21, 150, 111, .14)
+    }
+
+    .m-coverage {
+      --accent-bg: rgba(185, 107, 0, .13)
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(18rem, .9fr);
+      gap: .8rem;
+      margin-top: .8rem
+    }
+
+    .binding {
+      border-left: 4px solid var(--amber);
+      background: var(--amber-soft)
+    }
+
+    .binding .big {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--amber);
+      margin-top: .3rem
+    }
+
+    .binding p {
+      font-size: .68rem;
+      line-height: 1.5;
+      color: var(--muted);
+      margin: .3rem 0 0
+    }
+
+    .result-bar {
+      height: .62rem;
+      border-radius: 999px;
+      background: var(--surface-3);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      margin-top: .7rem
+    }
+
+    .result-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--primary), var(--primary-2));
+      border-radius: inherit;
+      transition: width .75s cubic-bezier(.2, .7, .2, 1)
+    }
+
+    .pathline {
+      font-size: .7rem;
+      color: var(--muted);
+      margin-top: .42rem
+    }
+
+    .pathline strong {
+      color: var(--text)
+    }
+
+    .tabs {
+      display: flex;
+      gap: .35rem;
+      overflow: auto;
+      padding: .85rem 0 .1rem
+    }
+
+    .tab {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--muted);
+      padding: .58rem .75rem;
+      border-radius: .7rem;
+      cursor: pointer;
+      transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease
+    }
+
+    .tab:hover {
+      transform: translateY(-1px)
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, var(--primary-soft), var(--green-soft));
+      color: var(--text);
+      border-color: color-mix(in srgb, var(--primary) 34%, var(--line));
+      box-shadow: var(--shadow-1)
+    }
+
+    .tab-panel {
+      display: none
+    }
+
+    .tab-panel.active {
+      display: block;
+      animation: fade .22s ease
+    }
+
+    .chain {
+      display: grid;
+      gap: .5rem
+    }
+
+    .chain-item {
+      display: grid;
+      grid-template-columns: 2rem minmax(0, 1fr) auto;
+      gap: .65rem;
+      align-items: center;
+      padding: .7rem .72rem;
+      border: 1px solid var(--line);
+      border-radius: .8rem;
+      background: var(--surface-2)
+    }
+
+    .chain-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: .62rem;
+      display: grid;
+      place-items: center;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: .75rem
+    }
+
+    .chain-main strong {
+      display: block;
+      font-size: .72rem
+    }
+
+    .chain-main span {
+      display: block;
+      font-size: .59rem;
+      color: var(--muted);
+      margin-top: .08rem
+    }
+
+    .chain-meta {
+      text-align: right
+    }
+
+    .chain-meta strong {
+      font-size: .64rem
+    }
+
+    .chain-meta span {
+      display: block;
+      font-size: .56rem;
+      color: var(--muted);
+      margin-top: .1rem
+    }
+
+    .facts-wrap {
+      overflow: auto
+    }
+
+    .facts {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    .facts th,
+    .facts td {
+      text-align: left;
+      padding: .55rem .5rem;
+      border-bottom: 1px solid var(--line);
+      font-size: .61rem;
+      white-space: nowrap
+    }
+
+    .facts th {
+      font-size: .54rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted)
+    }
+
+    .facts td:first-child,
+    .facts th:first-child {
+      padding-left: 0
+    }
+
+    .verified {
+      color: var(--green);
+      font-weight: 820
+    }
+
+    .unverified {
+      color: var(--red);
+      font-weight: 820
+    }
+
+    .analytics {
+      display: grid;
+      grid-template-columns: minmax(14rem, .7fr) minmax(0, 1.3fr);
+      gap: .8rem
+    }
+
+    .donut {
+      width: 11rem;
+      height: 11rem;
+      border-radius: 50%;
+      background: var(--surface-2);
+      position: relative;
+      margin: .4rem auto
+    }
+
+    .donut:after {
+      content: "";
+      position: absolute;
+      inset: 2.7rem;
+      border-radius: 50%;
+      background: var(--surface)
+    }
+
+    .donut-center {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      z-index: 1
+    }
+
+    .donut-center b {
+      font-size: 1.55rem
+    }
+
+    .donut-center span {
+      display: block;
+      font-size: .58rem;
+      color: var(--muted)
+    }
+
+    .legend {
+      display: grid;
+      gap: .42rem;
+      margin-top: .75rem
+    }
+
+    .legend-row {
+      display: flex;
+      justify-content: space-between;
+      gap: .5rem;
+      font-size: .61rem
+    }
+
+    .legend-left {
+      display: flex;
+      align-items: center;
+      gap: .4rem
+    }
+
+    .legend-dot {
+      width: .55rem;
+      height: .55rem;
+      border-radius: 50%
+    }
+
+    .bars {
+      display: grid;
+      gap: .65rem
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 7rem 1fr auto;
+      gap: .55rem;
+      align-items: center
+    }
+
+    .bar-label {
+      font-size: .61rem;
+      color: var(--muted)
+    }
+
+    .bar-track {
+      height: .55rem;
+      border-radius: 999px;
+      background: var(--surface-3);
+      border: 1px solid var(--line);
+      overflow: hidden
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: inherit;
+      transition: width .7s ease
+    }
+
+    .bar-num {
+      font-size: .58rem;
+      color: var(--muted);
+      min-width: 4rem;
+      text-align: right
+    }
+
+    .graph-wrap {
+      position: relative;
+      min-height: 25rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: linear-gradient(180deg, var(--surface-2), var(--surface));
+      overflow: hidden
+    }
+
+    .graph-wrap svg {
+      display: block;
+      width: 100%;
+      height: 25rem
+    }
+
+    .graph-node rect {
+      fill: var(--surface);
+      stroke: var(--line);
+      stroke-width: 1.2
+    }
+
+    .graph-node text {
+      fill: var(--text);
+      font-size: 13px;
+      font-weight: 800
+    }
+
+    .graph-node .sub {
+      fill: var(--muted);
+      font-size: 10px;
+      font-weight: 650
+    }
+
+    .edge {
+      stroke: var(--line);
+      stroke-width: 2
+    }
+
+    .edge.support {
+      stroke: color-mix(in srgb, var(--green) 78%, transparent)
+    }
+
+    .edge.conflict {
+      stroke: var(--red);
+      stroke-dasharray: 6 6
+    }
+
+    .edge.constraint {
+      stroke: var(--amber);
+      stroke-dasharray: 5 5
+    }
+
+    .graph-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .8rem;
+      padding: .75rem .85rem;
+      border-top: 1px solid var(--line);
+      font-size: .6rem;
+      color: var(--muted)
+    }
+
+    .legend-line {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem
+    }
+
+    .legend-line i {
+      width: 1.2rem;
+      height: 2px;
+      background: var(--line);
+      display: block
+    }
+
+    .legend-line i.support {
+      background: var(--green)
+    }
+
+    .legend-line i.conflict {
+      background: var(--red);
+      border-top: 2px dashed var(--red);
+      height: 0
+    }
+
+    .legend-line i.constraint {
+      background: var(--amber);
+      border-top: 2px dashed var(--amber);
+      height: 0
+    }
+
+    .resolution-intro {
+      padding: .75rem .85rem;
+      border: 1px solid color-mix(in srgb, var(--primary) 26%, var(--line));
+      background: var(--primary-soft);
+      border-radius: .8rem;
+      margin-bottom: .65rem
+    }
+
+    .resolution-intro strong {
+      font-size: .73rem
+    }
+
+    .resolution-intro p {
+      margin: .25rem 0 0;
+      font-size: .62rem;
+      color: var(--muted);
+      line-height: 1.5
+    }
+
+    .resolution-list {
+      display: grid;
+      gap: .55rem
+    }
+
+    .resolution-card {
+      padding: .8rem;
+      border: 1px solid var(--line);
+      border-radius: .8rem;
+      background: var(--surface-2)
+    }
+
+    .resolution-top {
+      display: flex;
+      justify-content: space-between;
+      gap: .7rem;
+      align-items: start
+    }
+
+    .resolution-name {
+      font-weight: 900;
+      font-size: .73rem
+    }
+
+    .resolution-stage {
+      font-size: .56rem;
+      color: var(--muted);
+      margin-top: .1rem
+    }
+
+    .resolution-badge {
+      font-size: .58rem;
+      padding: .28rem .45rem;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      border: 1px solid color-mix(in srgb, var(--green) 24%, var(--line))
+    }
+
+    .resolution-copy {
+      margin-top: .5rem;
+      font-size: .62rem;
+      line-height: 1.5;
+      color: var(--muted)
+    }
+
+    .resolution-copy b {
+      color: var(--text)
+    }
+
+    .findings {
+      display: grid;
+      gap: .55rem
+    }
+
+    .finding {
+      display: grid;
+      grid-template-columns: 2rem minmax(0, 1fr) auto;
+      gap: .6rem;
+      align-items: start;
+      padding: .75rem;
+      border: 1px solid var(--line);
+      border-radius: .8rem;
+      background: var(--surface-2)
+    }
+
+    .finding-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: .6rem;
+      display: grid;
+      place-items: center;
+      background: var(--amber-soft);
+      color: var(--amber);
+      font-weight: 900
+    }
+
+    .finding.red .finding-icon {
+      background: var(--red-soft);
+      color: var(--red)
+    }
+
+    .finding.green .finding-icon {
+      background: var(--green-soft);
+      color: var(--green)
+    }
+
+    .finding strong {
+      font-size: .7rem
+    }
+
+    .finding p {
+      margin: .18rem 0 0;
+      color: var(--muted);
+      font-size: .61rem;
+      line-height: 1.45
+    }
+
+    .replay {
+      display: grid;
+      gap: .55rem
+    }
+
+    .replay-row {
+      display: grid;
+      grid-template-columns: minmax(11rem, .7fr) minmax(0, 1fr) 5rem;
+      gap: .7rem;
+      align-items: center;
+      padding: .7rem .75rem;
+      border: 1px solid var(--line);
+      border-radius: .8rem;
+      background: var(--surface-2)
+    }
+
+    .replay-name {
+      font-size: .68rem;
+      font-weight: 900
+    }
+
+    .replay-sub {
+      font-size: .56rem;
+      color: var(--muted);
+      margin-top: .08rem
+    }
+
+    .replay-main {
+      font-size: .61rem;
+      color: var(--muted);
+      line-height: 1.45
+    }
+
+    .replay-main strong {
+      color: var(--text)
+    }
+
+    .replay-change {
+      text-align: right;
+      font-weight: 900;
+      font-size: .68rem
+    }
+
+    .zero {
+      color: var(--amber)
+    }
+
+    .positive {
+      color: var(--green)
+    }
+
+    .access-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .45rem
+    }
+
+    .access-grid button {
+      padding: .62rem .7rem;
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      border-radius: .7rem;
+      cursor: pointer;
+      font-size: .64rem
+    }
+
+    .access-grid button:hover {
+      border-color: color-mix(in srgb, var(--primary) 36%, var(--line));
+      background: var(--primary-soft)
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .58rem;
+      margin-top: 1.2rem
+    }
+
+    .toast {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      max-width: 23rem;
+      padding: .7rem .82rem;
+      border-radius: .75rem;
+      background: var(--text);
+      color: var(--bg);
+      box-shadow: var(--shadow-2);
+      font-size: .65rem;
+      opacity: 0;
+      transform: translateY(.6rem);
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 100
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .empty {
+      padding: 1.2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .65rem;
+      border: 1px dashed var(--line);
+      border-radius: .8rem
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace
+    }
+
+    :focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--primary) 70%, white);
+      outline-offset: 2px
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(5px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(4px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @media (max-width:1150px) {
+      .app {
+        grid-template-columns: 4.5rem 1fr
+      }
+
+      .brand-word,
+      .brand-sub,
+      .nav-label,
+      .gemini-card,
+      .system-card {
+        display: none
+      }
+
+      .brand {
+        justify-content: center
+      }
+
+      .workspace {
+        grid-template-columns: 1fr
+      }
+
+      .side-stack {
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+      }
+
+      .hero-grid,
+      .result-grid {
+        grid-template-columns: 1fr
+      }
+
+      .quote {
+        justify-self: start;
+        width: 100%
+      }
+
+      .hero-features {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media (max-width:850px) {
+      .main {
+        padding: .7rem
+      }
+
+      .metrics {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .case-picker,
+      .upload-layout,
+      .analytics {
+        grid-template-columns: 1fr
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column
+      }
+
+      .hero-brand {
+        align-items: flex-start
+      }
+
+      .hero-logo {
+        width: 3.6rem;
+        height: 3.6rem
+      }
+
+      .graph-wrap,
+      .graph-wrap svg {
+        height: 22rem
+      }
+
+      .side-stack {
+        grid-template-columns: 1fr
+      }
+
+      .replay-row {
+        grid-template-columns: 1fr
+      }
+
+      .replay-change {
+        text-align: left
+      }
+
+      .nav button {
+        justify-content: center
+      }
+
+      .step {
+        font-size: .56rem
+      }
+    }
+
+    @media (max-width:560px) {
+      .metrics {
+        grid-template-columns: 1fr
+      }
+
+      .hero-features {
+        grid-template-columns: 1fr
+      }
+
+      .app {
+        grid-template-columns: 1fr
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        padding: .65rem;
+        border-right: 0;
+        border-bottom: 1px solid var(--line)
+      }
+
+      .sidebar .sidebar-spacer,
+      .sidebar .gemini-card,
+      .sidebar .system-card {
+        display: none
+      }
+
+      .brand-word,
+      .brand-sub {
+        display: block
+      }
+
+      .brand {
+        padding: 0;
+        margin-right: .5rem
+      }
+
+      .nav {
+        display: flex;
+        overflow: auto
+      }
+
+      .nav button {
+        width: auto;
+        white-space: nowrap
+      }
+
+      .nav-label {
+        display: inline
+      }
+
+      .nav-icon {
+        width: auto
+      }
+
+      .top-actions {
+        width: 100%
+      }
+
+      .status {
+        flex: 1
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #000
+      }
+
+      .sidebar,
+      .topbar,
+      .top-actions,
+      .tabs,
+      .access-grid,
+      .toast,
+      .footer {
+        display: none !important
+      }
+
+      .main {
+        padding: 0
+      }
+
+      .panel,
+      .hero,
+      .metric {
+        box-shadow: none;
+        border: 1px solid #aaa
+      }
+
+      .hero {
+        break-inside: avoid
+      }
+    }
   </style>
 </head>
+
 <body class="light">
-<div class="app">
-  <aside class="sidebar" aria-label="Main navigation">
-    <div class="brand">
-      <div class="brand-mark" aria-hidden="true"><img src="/static/evidentia-logo.png" alt="" /></div>
-      <div><div class="brand-word">EVIDENTIA</div><div class="brand-sub">Recycling evidence review</div></div>
-    </div>
-    <nav class="nav">
-      <button class="active" data-nav="overview" title="Overview"><span class="nav-icon">⌂</span><span class="nav-label">Overview</span></button>
-      <button data-nav="analyze" title="New analysis"><span class="nav-icon">＋</span><span class="nav-label">New Analysis</span></button>
-      <button data-nav="chain" title="Evidence chain"><span class="nav-icon">▱</span><span class="nav-label">Evidence Chain</span></button>
-      <button data-nav="graph" title="Evidence links"><span class="nav-icon">⌘</span><span class="nav-label">Evidence Map</span></button>
-      <button data-nav="resolution" title="Next steps"><span class="nav-icon">↗</span><span class="nav-label">Next Steps</span></button>
-      <button data-nav="findings" title="AI review notes"><span class="nav-icon">✦</span><span class="nav-label">AI Review</span></button>
-      <button data-nav="replay" title="View sample comparison"><span class="nav-icon">↻</span><span class="nav-label">Sample Comparison</span></button>
-      <button data-nav="report" title="Export report"><span class="nav-icon">⇩</span><span class="nav-label">Download Result</span></button>
-    </nav>
-    <div class="sidebar-spacer"></div>
-    <section class="gemini-card" aria-label="Gemini integration">
-      <div class="gemini-title">✦ Powered by Google Gemini</div>
-      <div class="gemini-body">AI helps read the PDFs. Clear rules calculate what the evidence can support.</div>
-      <div class="checks"><div class="check"><span class="dot"></span>Reads the original document</div><div class="check"><span class="dot"></span>AI review stays within the evidence</div><div class="check"><span class="dot"></span>Clear review history</div></div>
-    </section>
-    <section class="system-card" aria-label="System status">
-      <div class="system-title">App status</div>
-      <div class="system-meta" id="systemStatusMeta">Checking the app…</div>
-      <div class="system-list"><div class="system-row"><span class="dot"></span><span>App</span><strong id="systemApi">Checking</strong></div><div class="system-row"><span class="dot"></span><span>AI document reader</span><strong id="systemGemini">Checking</strong></div></div>
-    </section>
-  </aside>
-
-  <main class="main">
-    <div class="topbar">
-      <div><div class="crumb">Evidentia / Review recycling evidence</div></div>
-      <div class="top-actions">
-        <div class="status"><span class="dot"></span><strong id="serverStatus">Checking app</strong></div>
-        <button class="theme-btn" id="themeToggle" title="Switch light or dark mode" aria-label="Switch theme">◐ Theme</button>
-        <button class="scale-btn" id="fontMinus" title="Decrease text size" aria-label="Decrease text size">A−</button>
-        <button class="scale-btn" id="fontPlus" title="Increase text size" aria-label="Increase text size">A+</button>
-        <button class="icon-btn" id="contrastToggle" title="Toggle high contrast" aria-label="Toggle high contrast">◐ Contrast</button>
-      </div>
-    </div>
-
-    <section class="hero" id="overview">
-      <div class="hero-grid">
+  <div class="app">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><img src="/static/evidentia-logo.png" alt="" /></div>
         <div>
-          <div class="hero-brand">
-            <div class="hero-logo" aria-hidden="true"><img src="/static/evidentia-logo.png" alt="" /></div>
-            <div><div class="eyebrow">Clear evidence. Clear answers.</div><h1>EVID<span>ENTIA</span></h1><div class="hero-sub">Check recycling claims with evidence</div></div>
-          </div>
-          <div class="hero-question">Do these documents support the recycling claim?</div>
-          <div class="hero-sub" style="margin-top:.45rem">Traceability records what was submitted. Evidentia tests what that evidence can actually support.</div>
-          <div class="hero-features">
-            <div class="feature"><div class="feature-icon">✦</div><div><strong>AI-assisted</strong><span>Reads documents</span></div></div>
-            <div class="feature"><div class="feature-icon">⌁</div><div><strong>Consistent</strong><span>Uses clear checks</span></div></div>
-            <div class="feature"><div class="feature-icon">✓</div><div><strong>Source-checked</strong><span>Details tied to documents</span></div></div>
-            <div class="feature"><div class="feature-icon">⌘</div><div><strong>Reviewable</strong><span>See what changed</span></div></div>
-          </div>
+          <div class="brand-word">EVIDENTIA</div>
+          <div class="brand-sub">Recycling evidence review</div>
         </div>
-        <aside class="quote"><b>“From documents to decisions, with evidence.”</b><span>AI helps read evidence. Rules control the quantities.</span></aside>
       </div>
-    </section>
-
-    <div class="workspace" id="analyzePanel">
-      <section class="panel">
-        <div class="panel-head"><div><div class="panel-title">1. Upload evidence</div><div class="panel-sub">Add the documents that should support one recycling claim.</div></div><span class="tag" id="fileSelection">0 files</span></div>
-        <div class="panel-body">
-          <div class="stepper" aria-label="Analysis progress">
-            <div class="step active" id="step1"><div class="step-dot">1</div>Upload</div><div class="step" id="step2"><div class="step-dot">2</div>Read files</div><div class="step" id="step3"><div class="step-dot">3</div>Check details</div><div class="step" id="step4"><div class="step-dot">4</div>Review</div>
-          </div>
-          <div class="case-picker">
-            <label for="caseSelect">Case to review
-              <select id="caseSelect" aria-describedby="caseSummary"><option value="">Loading cases…</option></select>
-            </label>
-            <label for="claimSelect">Claim to check
-              <select id="claimSelect" disabled><option value="">Loading claims…</option></select>
-            </label>
-            <p class="case-summary" id="caseSummary">Loading your saved cases…</p>
-          </div>
-          <div class="upload-layout">
-            <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose PDF evidence files">
-              <div><div class="upload-cloud">⇧</div><div class="drop-title">Drag &amp; drop evidence PDFs here</div><div class="drop-sub">Certificates · invoices · manifests · weighbridge · facility records</div><button class="choose" id="chooseBtn" type="button">Choose files</button><input id="fileInput" class="sr-only" type="file" accept="application/pdf,.pdf" multiple></div>
-            </div>
-            <div class="files-wrap"><div class="file-head"><div><div class="file-title">Selected files</div><div class="tiny" id="selectedSummary">Your selected files will appear here.</div></div><button class="clear-btn" id="clearFiles" type="button">Clear all</button></div><div class="file-list" id="fileList"><div class="empty">No evidence selected yet.</div></div></div>
-          </div>
-          <button class="primary" id="analyzeBtn" type="button" disabled>✦ Check evidence →</button>
-          <div class="loading" id="loading"><div class="loading-row"><div class="loader"></div><div class="loading-stage" id="loadingStage">Preparing analysis…</div></div><div class="progress"><div class="progress-fill" id="progressFill"></div></div></div>
-          <div class="error" id="error" role="alert"></div>
+      <nav class="nav">
+        <button class="active" data-nav="overview" title="Overview"><span class="nav-icon">⌂</span><span
+            class="nav-label">Overview</span></button>
+        <button data-nav="analyze" title="New analysis"><span class="nav-icon">＋</span><span class="nav-label">New
+            Analysis</span></button>
+        <button data-nav="chain" title="Evidence chain"><span class="nav-icon">▱</span><span class="nav-label">Evidence
+            Chain</span></button>
+        <button data-nav="graph" title="Evidence links"><span class="nav-icon">⌘</span><span class="nav-label">Evidence
+            Map</span></button>
+        <button data-nav="resolution" title="Next steps"><span class="nav-icon">↗</span><span class="nav-label">Next
+            Steps</span></button>
+        <button data-nav="findings" title="AI review notes"><span class="nav-icon">✦</span><span class="nav-label">AI
+            Review</span></button>
+        <button data-nav="replay" title="View sample comparison"><span class="nav-icon">↻</span><span
+            class="nav-label">Sample Comparison</span></button>
+        <button data-nav="report" title="Export report"><span class="nav-icon">⇩</span><span class="nav-label">Download
+            Result</span></button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <section class="gemini-card" aria-label="Gemini integration">
+        <div class="gemini-title">✦ Powered by Google Gemini</div>
+        <div class="gemini-body">AI helps read the PDFs. Clear rules calculate what the evidence can support.</div>
+        <div class="checks">
+          <div class="check"><span class="dot"></span>Reads the original document</div>
+          <div class="check"><span class="dot"></span>AI review stays within the evidence</div>
+          <div class="check"><span class="dot"></span>Clear review history</div>
         </div>
       </section>
-      <aside class="side-stack">
-        <section class="panel"><div class="panel-head"><div><div class="panel-title">Analysis status</div><div class="panel-sub">See what is ready and what needs setup.</div></div><span class="tag green" id="statusBadge">Ready</span></div><div class="panel-body"><div class="status-list">
-          <div class="status-row"><div class="ico">✦</div><div><strong>AI reader</strong><span>Reads and reviews documents</span></div><span class="tag" id="geminiTag">Pending</span></div>
-          <div class="status-row"><div class="ico">⌁</div><div><strong>App service</strong><span>Runs the checks</span></div><span class="tag green">Running</span></div>
-          <div class="status-row"><div class="ico">✓</div><div><strong>Calculation rules</strong><span>Work out the supported amount</span></div><span class="tag green">Active</span></div>
-          <div class="status-row"><div class="ico">⌘</div><div><strong>Evidence links</strong><span>Show how records connect</span></div><span class="tag green">Ready</span></div>
-        </div></div></section>
-        <section class="panel"><div class="panel-head"><div><div class="panel-title">Quick actions</div><div class="panel-sub">Every action does something.</div></div></div><div class="panel-body"><div class="action-list">
-          <button class="action-btn" id="sampleBtn"><span><strong>Try a sample</strong><span>See how a sample recycling claim is checked</span></span><b>→</b></button>
-          <button class="action-btn" id="loadReplayBtn"><span><strong>Compare sample results</strong><span>See how added evidence changes the built-in example</span></span><b>↻</b></button>
-          <button class="action-btn" id="exportBtn"><span><strong>Download result</strong><span>Save the current review as a file</span></span><b>⇩</b></button>
-          <button class="action-btn" id="resetBtn"><span><strong>Clear workspace</strong><span>Start a fresh review</span></span><b>↺</b></button>
-        </div></div></section>
-        <section class="panel"><div class="panel-head"><div><div class="panel-title">Accessibility</div><div class="panel-sub">Controls affect the whole interface.</div></div></div><div class="panel-body"><div class="access-grid"><button id="accessMinus" type="button">A− Text</button><button id="accessPlus" type="button">A+ Text</button><button id="accessContrast" type="button">High contrast</button><button id="accessTheme" type="button">Light / dark</button></div></div></section>
-      </aside>
-    </div>
-
-    <section class="metrics" id="resultsPanel">
-      <article class="panel metric m-claimed"><div class="metric-label">Claimed amount</div><div class="metric-value" id="claimed">—</div><div class="metric-unit">tonnes</div><div class="metric-note">What the company says happened</div></article>
-      <article class="panel metric m-supported"><div class="metric-label">Supported by records</div><div class="metric-value" id="supported">—</div><div class="metric-unit">tonnes</div><div class="metric-note">Supported by current chain evidence</div></article>
-      <article class="panel metric m-final"><div class="metric-label">Current support limit</div><div class="metric-value positive" id="finalSupport">—</div><div class="metric-unit">tonnes</div><div class="metric-note">After applicable constraints</div></article>
-      <article class="panel metric m-coverage"><div class="metric-label">Documents checked</div><div class="metric-value" id="coverage">—</div><div class="metric-unit">%</div><div class="metric-note" id="coverageDetail">Awaiting analysis</div></article>
-    </section>
-
-    <section class="result-grid">
-      <article class="panel"><div class="panel-head"><div><div class="panel-title">How the amount is worked out</div><div class="panel-sub">A reviewer can see how the quantity narrows through the evidence chain.</div></div><span class="tag green" id="resultState">Waiting</span></div><div class="panel-body"><div class="pathline" id="supportPath">Claimed amount → Supported by records → Current support limit</div><div class="result-bar"><div class="result-fill" id="supportBar"></div></div><div class="tiny" style="margin-top:.45rem">Share of the claimed amount supported by the checked records</div></div></article>
-      <article class="panel binding"><div class="panel-head"><div><div class="panel-title">Main limit</div><div class="panel-sub">The main reason the documents support a smaller amount.</div></div><span class="tag amber">MAIN LIMIT</span></div><div class="panel-body"><div class="big" id="binding">—</div><p id="bindingText">The current limiting factor will appear after analysis.</p></div></article>
-    </section>
-
-    <section class="panel" style="margin-top:.8rem">
-      <div class="panel-head"><div><div class="panel-title">Review the evidence</div><div class="panel-sub">Use these views to understand what the documents show and what is still missing.</div></div></div>
-      <div class="panel-body">
-        <div class="tabs" role="tablist" aria-label="Evidence intelligence views">
-          <button class="tab active" data-tab="chain" type="button">Evidence Chain</button>
-          <button class="tab" data-tab="graph" type="button">Evidence Map</button>
-          <button class="tab" data-tab="resolution" type="button">Next Steps</button>
-          <button class="tab" data-tab="findings" type="button">AI Review</button>
-          <button class="tab" data-tab="replay" type="button">Compare Results</button>
+      <section class="system-card" aria-label="System status">
+        <div class="system-title">App status</div>
+        <div class="system-meta" id="systemStatusMeta">Checking the app…</div>
+        <div class="system-list">
+          <div class="system-row"><span class="dot"></span><span>App</span><strong id="systemApi">Checking</strong>
+          </div>
+          <div class="system-row"><span class="dot"></span><span>AI document reader</span><strong
+              id="systemGemini">Checking</strong></div>
         </div>
+      </section>
+    </aside>
 
-        <div class="tab-panel active" id="tab-chain">
-          <div class="panel" style="box-shadow:none;background:var(--surface-2)"><div class="panel-head"><div><div class="panel-title">Documents and source links</div><div class="panel-sub">Each detail is linked to its source document. Copies from one source are not treated as independent proof.</div></div><span class="tag" id="lineageBadge">— lineages</span></div><div class="panel-body">
-            <div class="analytics"><div><div class="donut"><div class="donut-center"><div><b id="docCountBig">0</b><span>documents</span></div></div></div><div class="legend"><div class="legend-row"><span class="legend-left"><i class="legend-dot" style="background:var(--green)"></i>Transport records</span><strong id="transportCount">0</strong></div><div class="legend-row"><span class="legend-left"><i class="legend-dot" style="background:var(--primary)"></i>Receipts</span><strong id="receiptCount">0</strong></div><div class="legend-row"><span class="legend-left"><i class="legend-dot" style="background:var(--purple)"></i>Facility records</span><strong id="facilityCount">0</strong></div><div class="legend-row"><span class="legend-left"><i class="legend-dot" style="background:var(--amber)"></i>Processing records</span><strong id="processingCount">0</strong></div><div class="legend-row"><span class="legend-left"><i class="legend-dot" style="background:#64748b"></i>Other</span><strong id="otherCount">0</strong></div></div></div>
-              <div><div class="bars"><div class="bar-row"><div class="bar-label">Transport / custody</div><div class="bar-track"><div class="bar-fill" id="transportBar" style="background:var(--blue);width:0%"></div></div><div class="bar-num" id="transportBarNum">—</div></div><div class="bar-row"><div class="bar-label">Processing capacity</div><div class="bar-track"><div class="bar-fill" id="processingBar" style="background:var(--green);width:0%"></div></div><div class="bar-num" id="processingBarNum">—</div></div><div class="bar-row"><div class="bar-label">Facility capacity</div><div class="bar-track"><div class="bar-fill" id="facilityBar" style="background:var(--purple);width:0%"></div></div><div class="bar-num" id="facilityBarNum">—</div></div><div class="bar-row"><div class="bar-label">Receipt consistency</div><div class="bar-track"><div class="bar-fill" id="receiptBar" style="background:var(--amber);width:0%"></div></div><div class="bar-num" id="receiptBarNum">—</div></div></div><div class="panel" style="margin-top:.7rem;box-shadow:none;background:var(--surface)"><div class="panel-body" style="padding:.7rem .8rem"><div class="tiny">Share supported by separate sources</div><strong id="independence">—</strong></div></div></div>
-            </div>
-            <div style="margin-top:.8rem"><div class="tiny" style="margin-bottom:.35rem">Uploaded documents</div><div class="chain" id="artifacts"><div class="empty">Analyze a claim to see its uploaded documents here.</div></div></div>
-            <div style="margin-top:.8rem"><div class="tiny" style="margin-bottom:.35rem">Checked details</div><div class="facts-wrap"><table class="facts"><thead><tr><th>Evidence</th><th>Detail</th><th>Value</th><th>Unit</th><th>How sure</th><th>Check</th></tr></thead><tbody id="factsTable"><tr><td colspan="6" class="empty">No checked details yet.</td></tr></tbody></table></div></div>
-          </div></div>
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <div class="crumb">Evidentia / Review recycling evidence</div>
         </div>
-
-        <div class="tab-panel" id="tab-graph">
-          <div class="resolution-intro"><strong>How to read this map</strong><p>Green lines show documents that support the claim. Red dashed lines show disagreements. Amber dashed lines show limits that need checking.</p></div>
-          <div class="graph-wrap"><svg id="graphSvg" viewBox="0 0 900 430" aria-label="Case evidence graph"></svg><div class="graph-legend"><span class="legend-line"><i class="support"></i>Supports</span><span class="legend-line"><i class="conflict"></i>Mismatch</span><span class="legend-line"><i class="constraint"></i>Limit</span></div></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:.7rem"><div class="panel" style="box-shadow:none;background:var(--surface-2)"><div class="panel-body"><div class="tiny">Evidence items linked</div><strong id="graphNodes">—</strong></div></div><div class="panel" style="box-shadow:none;background:var(--surface-2)"><div class="panel-body"><div class="tiny">Links between items</div><strong id="graphEdges">—</strong></div></div></div>
-        </div>
-
-        <div class="tab-panel" id="tab-resolution">
-          <div class="resolution-intro"><strong>What to do next</strong><p>This section lists documents that may help resolve a gap. Adding a file does not change the result unless it can be checked and linked to the claim.</p></div>
-          <div class="resolution-list" id="resolution"><div class="empty">Run an analysis to see the evidence that could change the result.</div></div>
-        </div>
-
-        <div class="tab-panel" id="tab-findings">
-          <div class="findings" id="findingsList"><div class="empty">AI review notes will appear after analysis.</div></div>
-          <div style="margin-top:.7rem"><div class="tiny" style="margin-bottom:.35rem">AI summary</div><div class="panel" style="box-shadow:none;background:var(--surface-2)"><div class="panel-body"><div class="panel-sub" id="geminiSummary">No AI summary yet.</div></div></div></div>
-        </div>
-
-        <div class="tab-panel" id="tab-replay">
-          <div class="resolution-intro"><strong>Built-in sample comparison</strong><p>This is an example of how the result can change when more evidence is checked. It is not the history of the claim you just uploaded.</p></div>
-          <div class="replay" id="replay"><div class="empty">Use “Compare sample results” to see how evidence changes the built-in example.</div></div>
+        <div class="top-actions">
+          <div class="status"><span class="dot"></span><strong id="serverStatus">Checking app</strong></div>
+          <button class="theme-btn" id="themeToggle" title="Switch light or dark mode" aria-label="Switch theme">◐
+            Theme</button>
+          <button class="scale-btn" id="fontMinus" title="Decrease text size"
+            aria-label="Decrease text size">A−</button>
+          <button class="scale-btn" id="fontPlus" title="Increase text size" aria-label="Increase text size">A+</button>
+          <button class="icon-btn" id="contrastToggle" title="Toggle high contrast" aria-label="Toggle high contrast">◐
+            Contrast</button>
         </div>
       </div>
-    </section>
 
-    <div class="footer">Evidentia · AI helps read documents; clear rules calculate what the evidence can support.</div>
-  </main>
-</div>
-<div class="toast" id="toast"></div>
+      <section class="hero" id="overview">
+        <div class="hero-grid">
+          <div>
+            <div class="hero-brand">
+              <div class="hero-logo" aria-hidden="true"><img src="/static/evidentia-logo.png" alt="" /></div>
+              <div>
+                <div class="eyebrow">Clear evidence. Clear answers.</div>
+                <h1>EVID<span>ENTIA</span></h1>
+                <div class="hero-sub">Check recycling claims with evidence</div>
+              </div>
+            </div>
+            <div class="hero-question">Do these documents support the recycling claim?</div>
+            <div class="hero-sub" style="margin-top:.45rem">Traceability records what was submitted. Evidentia tests
+              what that evidence can actually support.</div>
+            <div class="hero-features">
+              <div class="feature">
+                <div class="feature-icon">✦</div>
+                <div><strong>AI-assisted</strong><span>Reads documents</span></div>
+              </div>
+              <div class="feature">
+                <div class="feature-icon">⌁</div>
+                <div><strong>Consistent</strong><span>Uses clear checks</span></div>
+              </div>
+              <div class="feature">
+                <div class="feature-icon">✓</div>
+                <div><strong>Source-checked</strong><span>Details tied to documents</span></div>
+              </div>
+              <div class="feature">
+                <div class="feature-icon">⌘</div>
+                <div><strong>Reviewable</strong><span>See what changed</span></div>
+              </div>
+            </div>
+          </div>
+          <aside class="quote"><b>“From documents to decisions, with evidence.”</b><span>AI helps read evidence. Rules
+              control the quantities.</span></aside>
+        </div>
+      </section>
+
+      <div class="workspace" id="analyzePanel">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">1. Upload evidence</div>
+              <div class="panel-sub">Add the documents that should support one recycling claim.</div>
+            </div><span class="tag" id="fileSelection">0 files</span>
+          </div>
+          <div class="panel-body">
+            <div class="stepper" aria-label="Analysis progress">
+              <div class="step active" id="step1">
+                <div class="step-dot">1</div>Upload
+              </div>
+              <div class="step" id="step2">
+                <div class="step-dot">2</div>Read files
+              </div>
+              <div class="step" id="step3">
+                <div class="step-dot">3</div>Check details
+              </div>
+              <div class="step" id="step4">
+                <div class="step-dot">4</div>Review
+              </div>
+            </div>
+            <div class="case-picker">
+              <label for="caseSelect">Case to review
+                <select id="caseSelect" aria-describedby="caseSummary">
+                  <option value="">Loading cases…</option>
+                </select>
+              </label>
+              <label for="claimSelect">Claim to check
+                <select id="claimSelect" disabled>
+                  <option value="">Loading claims…</option>
+                </select>
+              </label>
+              <p class="case-summary" id="caseSummary">Loading your saved cases…</p>
+            </div>
+            <div class="upload-layout">
+              <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose PDF evidence files">
+                <div>
+                  <div class="upload-cloud">⇧</div>
+                  <div class="drop-title">Drag &amp; drop evidence PDFs here</div>
+                  <div class="drop-sub">Certificates · invoices · manifests · weighbridge · facility records</div>
+                  <button class="choose" id="chooseBtn" type="button">Choose files</button><input id="fileInput"
+                    class="sr-only" type="file" accept="application/pdf,.pdf" multiple>
+                </div>
+              </div>
+              <div class="files-wrap">
+                <div class="file-head">
+                  <div>
+                    <div class="file-title">Selected files</div>
+                    <div class="tiny" id="selectedSummary">Your selected files will appear here.</div>
+                  </div><button class="clear-btn" id="clearFiles" type="button">Clear all</button>
+                </div>
+                <div class="file-list" id="fileList">
+                  <div class="empty">No evidence selected yet.</div>
+                </div>
+              </div>
+            </div>
+            <button class="primary" id="analyzeBtn" type="button" disabled>✦ Check evidence →</button>
+            <div class="loading" id="loading">
+              <div class="loading-row">
+                <div class="loader"></div>
+                <div class="loading-stage" id="loadingStage">Preparing analysis…</div>
+              </div>
+              <div class="progress">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+            </div>
+            <div class="error" id="error" role="alert"></div>
+          </div>
+        </section>
+        <aside class="side-stack">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Analysis status</div>
+                <div class="panel-sub">See what is ready and what needs setup.</div>
+              </div><span class="tag green" id="statusBadge">Ready</span>
+            </div>
+            <div class="panel-body">
+              <div class="status-list">
+                <div class="status-row">
+                  <div class="ico">✦</div>
+                  <div><strong>AI reader</strong><span>Reads and reviews documents</span></div><span class="tag"
+                    id="geminiTag">Pending</span>
+                </div>
+                <div class="status-row">
+                  <div class="ico">⌁</div>
+                  <div><strong>App service</strong><span>Runs the checks</span></div><span
+                    class="tag green">Running</span>
+                </div>
+                <div class="status-row">
+                  <div class="ico">✓</div>
+                  <div><strong>Calculation rules</strong><span>Work out the supported amount</span></div><span
+                    class="tag green">Active</span>
+                </div>
+                <div class="status-row">
+                  <div class="ico">⌘</div>
+                  <div><strong>Evidence links</strong><span>Show how records connect</span></div><span
+                    class="tag green">Ready</span>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Quick actions</div>
+                <div class="panel-sub">Every action does something.</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="action-list">
+                <button class="action-btn" id="sampleBtn"><span><strong>Try a sample</strong><span>See how a sample
+                      recycling claim is checked</span></span><b>→</b></button>
+                <button class="action-btn" id="loadReplayBtn"><span><strong>Compare sample results</strong><span>See how
+                      added evidence changes the built-in example</span></span><b>↻</b></button>
+                <button class="action-btn" id="exportBtn"><span><strong>Download result</strong><span>Save the current
+                      review as a file</span></span><b>⇩</b></button>
+                <button class="action-btn" id="resetBtn"><span><strong>Clear workspace</strong><span>Start a fresh
+                      review</span></span><b>↺</b></button>
+              </div>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Accessibility</div>
+                <div class="panel-sub">Controls affect the whole interface.</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="access-grid"><button id="accessMinus" type="button">A− Text</button><button id="accessPlus"
+                  type="button">A+ Text</button><button id="accessContrast" type="button">High contrast</button><button
+                  id="accessTheme" type="button">Light / dark</button></div>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <section class="metrics" id="resultsPanel">
+        <article class="panel metric m-claimed">
+          <div class="metric-label">Claimed amount</div>
+          <div class="metric-value" id="claimed">—</div>
+          <div class="metric-unit">tonnes</div>
+          <div class="metric-note">What the company says happened</div>
+        </article>
+        <article class="panel metric m-supported">
+          <div class="metric-label">Supported by records</div>
+          <div class="metric-value" id="supported">—</div>
+          <div class="metric-unit">tonnes</div>
+          <div class="metric-note">Supported by current chain evidence</div>
+        </article>
+        <article class="panel metric m-final">
+          <div class="metric-label">Current support limit</div>
+          <div class="metric-value positive" id="finalSupport">—</div>
+          <div class="metric-unit">tonnes</div>
+          <div class="metric-note">After applicable constraints</div>
+        </article>
+        <article class="panel metric m-coverage">
+          <div class="metric-label">Documents checked</div>
+          <div class="metric-value" id="coverage">—</div>
+          <div class="metric-unit">%</div>
+          <div class="metric-note" id="coverageDetail">Awaiting analysis</div>
+        </article>
+      </section>
+
+      <section class="result-grid">
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">How the amount is worked out</div>
+              <div class="panel-sub">A reviewer can see how the quantity narrows through the evidence chain.</div>
+            </div><span class="tag green" id="resultState">Waiting</span>
+          </div>
+          <div class="panel-body">
+            <div class="pathline" id="supportPath">Claimed amount → Supported by records → Current support limit</div>
+            <div class="result-bar">
+              <div class="result-fill" id="supportBar"></div>
+            </div>
+            <div class="tiny" style="margin-top:.45rem">Share of the claimed amount supported by the checked records
+            </div>
+          </div>
+        </article>
+        <article class="panel binding">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">Main limit</div>
+              <div class="panel-sub">The main reason the documents support a smaller amount.</div>
+            </div><span class="tag amber">MAIN LIMIT</span>
+          </div>
+          <div class="panel-body">
+            <div class="big" id="binding">—</div>
+            <p id="bindingText">The current limiting factor will appear after analysis.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel" style="margin-top:.8rem">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Review the evidence</div>
+            <div class="panel-sub">Use these views to understand what the documents show and what is still missing.
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="tabs" role="tablist" aria-label="Evidence intelligence views">
+            <button class="tab active" data-tab="chain" type="button">Evidence Chain</button>
+            <button class="tab" data-tab="graph" type="button">Evidence Map</button>
+            <button class="tab" data-tab="resolution" type="button">Next Steps</button>
+            <button class="tab" data-tab="findings" type="button">AI Review</button>
+            <button class="tab" data-tab="replay" type="button">Compare Results</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-chain">
+            <div class="panel" style="box-shadow:none;background:var(--surface-2)">
+              <div class="panel-head">
+                <div>
+                  <div class="panel-title">Documents and source links</div>
+                  <div class="panel-sub">Each detail is linked to its source document. Copies from one source are not
+                    treated as independent proof.</div>
+                </div><span class="tag" id="lineageBadge">— lineages</span>
+              </div>
+              <div class="panel-body">
+                <div class="analytics">
+                  <div>
+                    <div class="donut">
+                      <div class="donut-center">
+                        <div><b id="docCountBig">0</b><span>documents</span></div>
+                      </div>
+                    </div>
+                    <div class="legend">
+                      <div class="legend-row"><span class="legend-left"><i class="legend-dot"
+                            style="background:var(--green)"></i>Transport records</span><strong
+                          id="transportCount">0</strong></div>
+                      <div class="legend-row"><span class="legend-left"><i class="legend-dot"
+                            style="background:var(--primary)"></i>Receipts</span><strong id="receiptCount">0</strong>
+                      </div>
+                      <div class="legend-row"><span class="legend-left"><i class="legend-dot"
+                            style="background:var(--purple)"></i>Facility records</span><strong
+                          id="facilityCount">0</strong></div>
+                      <div class="legend-row"><span class="legend-left"><i class="legend-dot"
+                            style="background:var(--amber)"></i>Processing records</span><strong
+                          id="processingCount">0</strong></div>
+                      <div class="legend-row"><span class="legend-left"><i class="legend-dot"
+                            style="background:#64748b"></i>Other</span><strong id="otherCount">0</strong></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="bars">
+                      <div class="bar-row">
+                        <div class="bar-label">Transport / custody</div>
+                        <div class="bar-track">
+                          <div class="bar-fill" id="transportBar" style="background:var(--blue);width:0%"></div>
+                        </div>
+                        <div class="bar-num" id="transportBarNum">—</div>
+                      </div>
+                      <div class="bar-row">
+                        <div class="bar-label">Processing capacity</div>
+                        <div class="bar-track">
+                          <div class="bar-fill" id="processingBar" style="background:var(--green);width:0%"></div>
+                        </div>
+                        <div class="bar-num" id="processingBarNum">—</div>
+                      </div>
+                      <div class="bar-row">
+                        <div class="bar-label">Facility capacity</div>
+                        <div class="bar-track">
+                          <div class="bar-fill" id="facilityBar" style="background:var(--purple);width:0%"></div>
+                        </div>
+                        <div class="bar-num" id="facilityBarNum">—</div>
+                      </div>
+                      <div class="bar-row">
+                        <div class="bar-label">Receipt consistency</div>
+                        <div class="bar-track">
+                          <div class="bar-fill" id="receiptBar" style="background:var(--amber);width:0%"></div>
+                        </div>
+                        <div class="bar-num" id="receiptBarNum">—</div>
+                      </div>
+                    </div>
+                    <div class="panel" style="margin-top:.7rem;box-shadow:none;background:var(--surface)">
+                      <div class="panel-body" style="padding:.7rem .8rem">
+                        <div class="tiny">Share supported by separate sources</div><strong id="independence">—</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin-top:.8rem">
+                  <div class="tiny" style="margin-bottom:.35rem">Uploaded documents</div>
+                  <div class="chain" id="artifacts">
+                    <div class="empty">Analyze a claim to see its uploaded documents here.</div>
+                  </div>
+                </div>
+                <div style="margin-top:.8rem">
+                  <div class="tiny" style="margin-bottom:.35rem">Checked details</div>
+                  <div class="facts-wrap">
+                    <table class="facts">
+                      <thead>
+                        <tr>
+                          <th>Evidence</th>
+                          <th>Detail</th>
+                          <th>Value</th>
+                          <th>Unit</th>
+                          <th>How sure</th>
+                          <th>Check</th>
+                        </tr>
+                      </thead>
+                      <tbody id="factsTable">
+                        <tr>
+                          <td colspan="6" class="empty">No checked details yet.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-graph">
+            <div class="resolution-intro"><strong>How to read this map</strong>
+              <p>Green lines show documents that support the claim. Red dashed lines show disagreements. Amber dashed
+                lines show limits that need checking.</p>
+            </div>
+            <div class="graph-wrap"><svg id="graphSvg" viewBox="0 0 900 430" aria-label="Case evidence graph"></svg>
+              <div class="graph-legend"><span class="legend-line"><i class="support"></i>Supports</span><span
+                  class="legend-line"><i class="conflict"></i>Mismatch</span><span class="legend-line"><i
+                    class="constraint"></i>Limit</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:.7rem">
+              <div class="panel" style="box-shadow:none;background:var(--surface-2)">
+                <div class="panel-body">
+                  <div class="tiny">Evidence items linked</div><strong id="graphNodes">—</strong>
+                </div>
+              </div>
+              <div class="panel" style="box-shadow:none;background:var(--surface-2)">
+                <div class="panel-body">
+                  <div class="tiny">Links between items</div><strong id="graphEdges">—</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-resolution">
+            <div class="resolution-intro"><strong>What to do next</strong>
+              <p>This section lists documents that may help resolve a gap. Adding a file does not change the result
+                unless it can be checked and linked to the claim.</p>
+            </div>
+            <div class="resolution-list" id="resolution">
+              <div class="empty">Run an analysis to see the evidence that could change the result.</div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-findings">
+            <div class="findings" id="findingsList">
+              <div class="empty">AI review notes will appear after analysis.</div>
+            </div>
+            <div style="margin-top:.7rem">
+              <div class="tiny" style="margin-bottom:.35rem">AI summary</div>
+              <div class="panel" style="box-shadow:none;background:var(--surface-2)">
+                <div class="panel-body">
+                  <div class="panel-sub" id="geminiSummary">No AI summary yet.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-replay">
+            <div class="resolution-intro"><strong>Built-in sample comparison</strong>
+              <p>This is an example of how the result can change when more evidence is checked. It is not the history of
+                the claim you just uploaded.</p>
+            </div>
+            <div class="replay" id="replay">
+              <div class="empty">Use “Compare sample results” to see how evidence changes the built-in example.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">Evidentia · AI helps read documents; clear rules calculate what the evidence can support.
+      </div>
+    </main>
+  </div>
+  <div class="toast" id="toast"></div>
 
 
 
-<script>
-(function(){
-  const state={files:[],currentCase:null,replay:null,cases:[],selectedCaseId:"",selectedClaimId:"",fontScale:1,light:true,highContrast:false};
-  const $=id=>document.getElementById(id);
-  const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
-  const num=v=>Number.isFinite(Number(v))?Number(v).toFixed(1):'—';
-  const fmtChange=v=>v==null?'Conditional':`${Number(v)>0?'+':''}${Number(v).toFixed(1)} t`;
-  let toastTimer;
-  function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400)}
-  function error(msg){$('error').textContent=msg;$('error').style.display='block'}
-  function clearError(){$('error').style.display='none';$('error').textContent=''}
-  function setStep(n){for(let i=1;i<=4;i++){const e=$('step'+i);e.classList.toggle('active',i===n);e.classList.toggle('done',i<n)}}
-  function loading(on,stage='Working…'){ $('loading').style.display=on?'block':'none';$('loadingStage').textContent=stage; $('analyzeBtn').disabled=on||state.files.length===0||!state.selectedCaseId||!state.selectedClaimId; if(on) $('statusBadge').textContent='Checking evidence'; }
-  function setProgress(v){$('progressFill').style.width=`${Math.max(0,Math.min(100,v))}%`}
-  function addFiles(files){const incoming=Array.from(files||[]).filter(f=>f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf')); if(!incoming.length){error('Evidentia currently accepts PDF evidence files.');return} clearError(); const before=state.files.length; for(const f of incoming){if(!state.files.some(x=>x.name===f.name&&x.size===f.size)){state.files.push(f)}} updateFiles(); toast(`${state.files.length-before} PDF${state.files.length-before===1?'':'s'} added.`)}
-  function updateFiles(){ $('fileSelection').textContent=`${state.files.length} file${state.files.length===1?'':'s'}`;$('selectedSummary').textContent=state.files.length?`${state.files.length} evidence file${state.files.length===1?'':'s'} ready for analysis.`:'Your selected files will appear here.';$('analyzeBtn').disabled=state.files.length===0||!state.selectedCaseId||!state.selectedClaimId; const list=$('fileList'); list.innerHTML=''; if(!state.files.length){list.innerHTML='<div class="empty">No evidence selected yet.</div>';return} state.files.forEach((f,i)=>{const d=document.createElement('div');d.className='file-item';d.innerHTML=`<div class="file-left"><div class="file-badge">PDF</div><div style="min-width:0"><div class="file-name" title="${esc(f.name)}">${esc(f.name)}</div><div class="file-size">${(f.size/1024).toFixed(1)} KB</div></div></div><button class="remove" type="button" aria-label="Remove ${esc(f.name)}" data-remove="${i}">✕</button>`;list.appendChild(d)});list.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{state.files.splice(Number(b.dataset.remove),1);updateFiles();toast('File removed.')})}
-  async function checkHealth(){try{const r=await fetch('/api/health');if(!r.ok)throw new Error(`API ${r.status}`);const data=await r.json();$('serverStatus').textContent='App online';$('systemApi').textContent='Online';$('systemApi').className='positive';$('systemStatusMeta').textContent='The app is ready';setGemini(data.gemini_configured?'available':'demo');}catch(e){$('serverStatus').textContent='App offline';$('systemApi').textContent='Offline';$('systemApi').className='unverified';$('systemStatusMeta').textContent='Start the app to continue';setGemini('pending');}}
-  function setGemini(status){const ok=['gemini','available','success'].includes(status);const demo=['demo','demo_fallback'].includes(status);const label=ok?'Connected':demo?'Demo mode':'Needs setup';$('geminiTag').textContent=label;$('geminiTag').className=`tag ${ok?'green':demo?'amber':''}`;$('systemGemini').textContent=ok?'Ready':demo?'Demo mode':'Needs setup';$('systemGemini').className=ok?'positive':demo?'':'unverified'}
-  function updateClaimOptions(caseId,preferredClaimId=''){const item=state.cases.find(x=>x.id===caseId);state.selectedCaseId=item?.id||'';const select=$('claimSelect');select.innerHTML='';state.selectedClaimId='';if(!item){select.disabled=true;select.add(new Option('No case selected',''));$('caseSummary').textContent='Choose a saved case to see its claims.';updateFiles();return}const claims=item.claims||[];if(!claims.length){select.add(new Option('No claim in this case',''));select.disabled=true;$('caseSummary').textContent=`${item.company?.name||'Company'} · ${item.facility?.name||'No facility linked'} · Add a claim before analyzing evidence.`;updateFiles();return}for(const claim of claims){const amount=claim.claimed_quantity?` · ${claim.claimed_quantity}`:'';select.add(new Option(`${claim.ref} · ${claim.material}${amount}`,claim.id))}select.disabled=false;state.selectedClaimId=claims.some(c=>c.id===preferredClaimId)?preferredClaimId:claims[0].id;select.value=state.selectedClaimId;$('caseSummary').textContent=`${item.company?.name||'Company'} · ${item.facility?.name||'No facility linked'}${item.facility?.location?' · '+item.facility.location:''}`;updateFiles()}
-  async function loadCases(){const select=$('caseSelect');try{const r=await fetch('/api/cases');if(!r.ok)throw new Error('Could not load cases. Start the app again and refresh this page.');const data=await r.json();state.cases=data.cases||[];select.innerHTML='';if(!state.cases.length){select.add(new Option('No saved cases',''));select.disabled=true;updateClaimOptions('');return}for(const item of state.cases)select.add(new Option(`${item.ref} · ${item.title}`,item.id));select.disabled=false;const preferred=state.cases.find(item=>item.title==='E-waste Recycling Claim Demo')||state.cases[0];select.value=preferred.id;updateClaimOptions(preferred.id)}catch(e){select.innerHTML='';select.add(new Option('Could not load cases',''));select.disabled=true;$('caseSummary').textContent='Cases could not be loaded. Start the app again and refresh this page.';updateClaimOptions('');error(e.message||'Could not load cases.')}}
-  async function analyzeUpload(){clearError(); if(!state.files.length){error('Choose at least one PDF evidence file.');return} if(!state.selectedCaseId||!state.selectedClaimId){error('Choose a case and claim before starting the analysis.');return} loading(true,'Uploading evidence…');setProgress(18);setStep(1);try{const fd=new FormData();fd.append('case_id',state.selectedCaseId);fd.append('claim_id',state.selectedClaimId);state.files.forEach(f=>fd.append('files',f,f.name));await new Promise(r=>setTimeout(r,160));setProgress(34);setStep(2);$('loadingStage').textContent='Reading the documents…';const r=await fetch('/api/analyze-upload',{method:'POST',body:fd});if(!r.ok)throw new Error(await r.text()||`Analysis failed (${r.status})`);setProgress(66);setStep(3);$('loadingStage').textContent='Checking details and calculating the supported amount…';const data=await r.json();setProgress(86);setStep(4);$('loadingStage').textContent='Preparing the review result…';state.currentCase=data;renderCase(data);await new Promise(r=>setTimeout(r,220));setProgress(100);toast(data.status==='review_required'?(data.message||'The files need a manual review before a result can be calculated.'):'Evidence checked.');}catch(e){error(e.message||'Unable to analyze evidence package.');$('statusBadge').textContent='Error'}finally{loading(false);setStep(state.currentCase?4:1);}}
-  async function sampleAnalysis(){clearError();loading(true,'Loading the baseline sample case…');setProgress(22);setStep(1);try{const r=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({scenario:'baseline'})});if(!r.ok)throw new Error(await r.text()||`Sample analysis failed (${r.status})`);setProgress(52);setStep(3);$('loadingStage').textContent='The AI is reading the sample documents and the calculation rules are checking the amounts…';const data=await r.json();state.currentCase=data;renderCase(data);setProgress(100);toast('Sample review complete.')}catch(e){error(e.message||'Unable to run sample analysis.')}finally{loading(false);setStep(state.currentCase?4:1)}}
-  async function loadReplay(activate=false){try{const r=await fetch('/api/replay');if(!r.ok)throw new Error(`Replay ${r.status}`);state.replay=await r.json();renderReplay(state.replay);if(activate)activateTab('replay');toast('Sample comparison loaded.')}catch(e){error(e.message||'Replay unavailable.')}}
-  function findQ(data,types,fields){const ids=new Set((data.artifacts||[]).filter(a=>types.includes(String(a.artifact_type||'').toLowerCase())).map(a=>a.artifact_id));for(const f of fields){const hit=(data.grounding||[]).find(x=>ids.has(x.artifact_id)&&String(x.field||'').toLowerCase().replaceAll(' ','_')===f&&x.state==='verified'&&x.normalized_value!=null);if(hit)return Number(hit.normalized_value)}return null}
-  function displayName(id,type,file){const map={
-    'MAN-01':'Transport record','MAN-03':'Transport record add-on','WB-01':'Receiving weight record','SHIFT-01':'Processing shift record','FAC-01':'Facility details','CERT-01':'Recycling certificate','INV-01':'Recycler invoice','DEC-01':'Recycler declaration'
-  };return map[id]||({transport_manifest:'Transport record',weighbridge:'Receiving weight record',facility_profile:'Facility details',processing_shift_record:'Processing shift record',shift_record:'Processing shift record',certificate:'Recycling certificate',invoice:'Recycler invoice',declaration:'Recycler declaration'}[String(type||'').toLowerCase()]||file||id||'Evidence document')}
-  function friendlyConstraint(value){const map={'processing capacity':'Facility processing capacity','transport/custody evidence':'Transport records','receipt/custody evidence':'Receiving weight record','none identified':'No clear limit','not identified':'Not identified'};return map[String(value||'').toLowerCase()]||String(value||'Not identified').replaceAll('_',' ')}
-  function friendlyOrigin(value){const map={claimant_recycler:'Claimant / recycler',counterparty:'Other party',independent_system:'Independent system',regulator_reference:'Regulator reference',unknown:'Source not confirmed'};return map[String(value||'unknown').toLowerCase()]||String(value).replaceAll('_',' ')}
-  function friendlyField(value){const map={quantity_t:'Quantity',net_weight_t:'Received weight',capacity_t:'Processing capacity',received_quantity_t:'Received quantity',date:'Date',timestamp:'Time',facility_id:'Facility ID',material:'Material',vehicle_id:'Vehicle ID',manifest_id:'Manifest ID',receipt_id:'Receipt ID',certificate_id:'Certificate ID',sender:'Sender',receiver:'Receiver',processing_period:'Processing period'};return map[String(value||'').toLowerCase()]||String(value||'—').replaceAll('_',' ')}
-  function renderCase(data){state.currentCase=data;const e=data.envelope||{},p=data.provenance||{},c=data.extraction_coverage||{},g=data.gemini_reasoning||{};$('claimed').textContent=num(e.claimed_t);$('supported').textContent=num(e.evidence_supported_t);$('finalSupport').textContent=num(e.final_supportable_t);$('coverage').textContent=c.coverage_pct==null?'—':Number(c.coverage_pct).toFixed(1);$('coverageDetail').textContent=c.coverage_pct==null?'No eligible documents were sent for extraction':`${c.complete?'Extraction ran for all eligible documents; this is not claim verification':'Some eligible documents produced no extracted details'}`;const noMass=Number(e.evidence_supported_t||0)<=0;const resultComplete=data.status!=='review_required'&&!!data.envelope&&!noMass;$('resultState').textContent=data.status==='review_required'?'Review needed':noMass?'Support not established':resultComplete?'Analysis complete':'Review needed';$('statusBadge').textContent=data.status==='review_required'?'Review needed':noMass?'Support not established':resultComplete?'Analyzed':'Review needed';$('binding').textContent=friendlyConstraint(e.binding_constraint);$('bindingText').textContent=e.binding_constraint==='transport/custody evidence'?'The transport records are the current limit.':e.binding_constraint==='receipt/custody evidence'?'The receiving weight record is the current limit.':e.binding_constraint==='processing capacity'?'The facility capacity record is the current limit.':'The current limit is based on the evidence checked so far.';const pct=e.claimed_t?Math.max(0,Math.min(100,(e.final_supportable_t/e.claimed_t)*100)):0;$('supportBar').style.width=`${pct}%`;$('supportPath').innerHTML=`<strong>${num(e.claimed_t)} t claimed</strong> → <strong>${num(e.evidence_supported_t)} t in records</strong> → <strong>${num(e.final_supportable_t)} t currently supported</strong>`;$('independence').textContent=p.independence_ratio??'—';$('lineageBadge').textContent=`${p.lineage_group_count??'—'} source groups`;$('geminiSummary').textContent=g.summary||(data.status==='review_required'?'The AI did not review these files because none passed the first check.':'No AI summary was returned.');if(data.status==='review_required'){$('geminiTag').textContent='Not run';$('geminiTag').className='tag'}else{setGemini(g.status)}renderArtifacts(data.artifacts||[],data.intake||[]);renderFacts(data.grounding||[]);renderSnapshot(data);renderGraph(data);if(data.status==='review_required'){$('resolution').innerHTML='<div class="empty">Review the file type and content, then upload a clearer or more relevant document.</div>'}else{renderResolution(data.resolution_path||{})}renderFindings(data);if(data.dossier_id){state.replay=null;renderReplay(null)}else{renderReplay(state.replay)}document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth',block:'start'})}
-  function renderArtifacts(arts,intake=[]){const c=$('artifacts');c.innerHTML='';if(!arts.length){c.innerHTML='<div class="empty">No evidence documents returned.</div>';return}const gate=new Map((intake||[]).map(x=>[String(x.artifact_id),x]));for(const a of arts){const g=gate.get(String(a.artifact_id))||{};const status=String(g.status||'checked');const label=status==='excluded'?'Excluded from this claim':status==='review'?'Human review required':status==='accepted'?'Accepted for extraction':'Submitted';const cls=status==='excluded'?'red':status==='review'?'amber':status==='accepted'?'green':'';const el=document.createElement('div');el.className='chain-item';el.innerHTML=`<div class="chain-icon">▱</div><div class="chain-main"><strong>${esc(a.filename||displayName(a.artifact_id,a.artifact_type))}</strong><span><span class="mono">${esc(a.artifact_id)}</span> · ${esc(String(a.artifact_type||'unknown'))}</span><span class="tag ${cls}">${esc(label)}</span><span>${esc(g.reason||'')}</span></div><div class="chain-meta"><strong>${esc(friendlyOrigin(a.origin_class))}</strong><span>${esc(displayName(a.artifact_id,a.artifact_type,a.filename))}</span></div>`;c.appendChild(el)}}
-  function renderFacts(facts){const b=$('factsTable');b.innerHTML='';const rows=(facts||[]).filter(x=>x.state==='verified'||x.normalized_value!=null);if(!rows.length){b.innerHTML='<tr><td colspan="6" class="empty">No details could be checked from the documents.</td></tr>';return}for(const f of rows){const tr=document.createElement('tr');tr.innerHTML=`<td>${esc(displayName(f.artifact_id))}</td><td>${esc(friendlyField(f.field))}</td><td>${esc(f.normalized_value==null?'—':f.normalized_value)}</td><td>${esc(f.unit||'—')}</td><td>${esc(f.confidence||'—')}</td><td class="${f.state==='verified'?'verified':'unverified'}">${esc(f.state==='verified'?'Checked':'Needs review')}</td>`;b.appendChild(tr)}}
-  function renderSnapshot(data){
-    const arts=data.artifacts||[], typeIs=(a,keys)=>{const t=String(a.artifact_type||'').toLowerCase();return keys.some(k=>t===k||t.includes(k));}, count=keys=>arts.filter(a=>typeIs(a,keys)).length;
-    const env=data.envelope||{};
-    const transport=findQ(data,['transport_manifest'],['quantity_t','net_weight_t','transport_t']);
-    const receipt=findQ(data,['weighbridge'],['quantity_t','net_weight_t','received_quantity_t']);
-    const facility=findQ(data,['facility_profile'],['capacity_t','processing_capacity_t']);
-    const shift=findQ(data,['shift_record','processing_shift_record'],['capacity_t','processing_capacity_t']);
-    const processing=shift??facility, claimed=Number(env.claimed_t)||0;
-    const set=(bar,numEl,v)=>{$(bar).style.width=`${claimed&&v!=null?Math.max(0,Math.min(100,(Number(v)/claimed)*100)):0}%`;$(numEl).textContent=v==null?'Not established':`${num(v)} / ${num(claimed)} t`;};
-    const transportCount=count(['transport_manifest','transport','manifest']), receiptCount=count(['weighbridge','receipt','receiving_log']), facilityCount=count(['facility_profile','facility']);
-    const processingCount=arts.filter(a=>typeIs(a,['processing','shift'])).length;
-    const otherCount=Math.max(0,arts.length-transportCount-receiptCount-facilityCount-processingCount);
-    $('docCountBig').textContent=arts.length;
-    $('transportCount').textContent=transportCount; $('receiptCount').textContent=receiptCount;
-    $('facilityCount').textContent=facilityCount; $('processingCount').textContent=processingCount; $('otherCount').textContent=otherCount;
-    const categories=[
-      {n:transportCount,c:'var(--green)'},{n:receiptCount,c:'var(--primary)'},
-      {n:facilityCount,c:'var(--purple)'},{n:processingCount,c:'var(--amber)'},{n:otherCount,c:'#64748b'}
-    ];
-    let cursor=0; const segments=[];
-    categories.filter(x=>x.n>0).forEach(x=>{const end=cursor+(x.n/Math.max(arts.length,1))*100;segments.push(`${x.c} ${cursor.toFixed(2)}% ${end.toFixed(2)}%`);cursor=end;});
-    document.querySelector('.donut').style.background=segments.length?`conic-gradient(${segments.join(',')})`:'var(--surface-2)';
-    set('transportBar','transportBarNum',transport); set('processingBar','processingBarNum',processing); set('facilityBar','facilityBarNum',facility); set('receiptBar','receiptBarNum',receipt);
-  }
-  function nodeSvg(x,y,w,h,title,sub,cls=''){return `<g class="graph-node ${cls}"><rect x="${x}" y="${y}" rx="16" width="${w}" height="${h}"/><text x="${x+w/2}" y="${y+27}" text-anchor="middle">${esc(title)}</text><text class="sub" x="${x+w/2}" y="${y+47}" text-anchor="middle">${esc(sub)}</text></g>`}
-  function renderGraph(data){
-    const g=data.constraint_graph||{}, svg=$('graphSvg');
-    const nodes=Array.isArray(g.nodes)?g.nodes:[], edges=Array.isArray(g.edges)?g.edges:[];
-    $('graphNodes').textContent=g.node_count??nodes.length;
-    $('graphEdges').textContent=g.edge_count??edges.length;
-    if(!nodes.length){svg.innerHTML='<text x="450" y="205" text-anchor="middle" fill="currentColor" font-size="18">No evidence graph data was returned.</text>';return;}
-    const typeOrder=['claim','artifact','fact','constraint'];
-    const groups=typeOrder.map(type=>({type,items:nodes.filter(n=>String(n.type||'').toLowerCase()===type)})).filter(x=>x.items.length);
-    const positions={}; const visible=[]; const maxPerRow=5; const rowY={claim:45,artifact:145,fact:245,constraint:345};
-    groups.forEach(group=>{
-      const items=group.items.slice(0,maxPerRow);
-      const step=840/Math.max(items.length,1);
-      items.forEach((node,i)=>{const x=30+i*step+(step-150)/2;const y=rowY[group.type]??145;positions[node.id]={x,y,cx:x+75,cy:y+26};visible.push(node);});
-    });
-    let html='<defs><marker id="actualArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--muted)"/></marker></defs>';
-    let visibleEdgeCount=0;
-    edges.forEach(edge=>{
-      const a=positions[edge.from], b=positions[edge.to]; if(!a||!b)return; visibleEdgeCount++;
-      const kind=String(edge.edge||'').toUpperCase();
-      const cls=kind.includes('CONTRADICT')?'conflict':(kind.includes('BOUND')||kind.includes('CAPACITY')?'constraint':'support');
-      html+=`<line class="edge ${cls}" x1="${a.cx}" y1="${a.cy+15}" x2="${b.cx}" y2="${b.cy-15}" marker-end="url(#actualArrow)"/>`;
-    });
-    visible.forEach(node=>{
-      const pos=positions[node.id], type=String(node.type||'other');
-      const label=String(node.label||node.id); const short=label.length>25?label.slice(0,22)+'…':label;
-      const meta=node.value!=null?`${node.value}${node.unit?' '+node.unit:''}`:(node.artifact_type||type);
-      html+=`<g class="graph-node"><rect x="${pos.x}" y="${pos.y}" rx="12" width="150" height="52"/><text x="${pos.cx}" y="${pos.y+22}" text-anchor="middle">${esc(short)}</text><text class="sub" x="${pos.cx}" y="${pos.y+39}" text-anchor="middle">${esc(String(meta).slice(0,28))}</text></g>`;
-    });
-    const hidden=nodes.length-visible.length;
-    const note=edges.length===0?'No confirmed links between these items.':`${visibleEdgeCount} actual link(s) drawn${hidden?`; ${hidden} additional node(s) not shown here`:''}.`;
-    html+=`<text x="450" y="420" text-anchor="middle" fill="currentColor" opacity=".8" font-size="12">${esc(note)}</text>`;
-    svg.innerHTML=html;
-  }
-  function renderResolution(res){const c=$('resolution');c.innerHTML='';const actions=res.actions||[];if(!actions.length){c.innerHTML='<div class="empty">No additional evidence actions returned.</div>';return}for(const a of actions){const id=a.artifact_id, name=displayName(id);const change=a.potential_change_t==null?'Conditional':fmtChange(a.potential_change_t);const d=document.createElement('div');d.className='resolution-card';d.innerHTML=`<div class="resolution-top"><div><div class="resolution-name">${esc(name)}</div><div class="resolution-stage">${esc(id)} · ${esc(a.stage||'evidence')}</div></div><span class="resolution-badge">${esc(change)}</span></div><div class="resolution-copy"><b>What this evidence is:</b> ${esc(a.evidence||name)}.<br><b>Why it matters:</b> ${esc(a.effect||'It could change the current limiting constraint if validated and correctly linked.')}<br><b>Condition:</b> ${esc(a.condition||'Human validation and correct linkage are required.')}</div>`;c.appendChild(d)}}
-  function renderFindings(data){
-    const l=$('findingsList'); l.innerHTML='';
-    const items=Array.isArray(data.findings)?data.findings:[];
-    if(data.status==='review_required'&&!items.length){items.push({type:'intake_review',severity:'review',message:data.message||'No document passed the intake checks.'});}
-    if(!items.length){l.innerHTML='<div class="empty">No explicit findings were returned. Review the source documents and claim scope before relying on the result.</div>';return;}
-    for(const x of items){
-      const severity=String(x.severity||'note').toLowerCase();
-      const cls=['critical','error','conflict'].includes(severity)?'red':(['review','warning'].includes(severity)?'':'green');
-      const title=String(x.type||'finding').replaceAll('_',' ').replace(/^./,c=>c.toUpperCase());
-      const ids=Array.isArray(x.source_artifacts)&&x.source_artifacts.length?` Source documents: ${x.source_artifacts.join(', ')}.`:'';
-      const d=document.createElement('div');d.className=`finding ${cls}`;
-      d.innerHTML=`<div class="finding-icon">${cls==='red'?'!':cls==='green'?'✓':'?'}</div><div><strong>${esc(title)}</strong><p>${esc((x.message||'No message supplied.')+ids)}</p></div><span class="tag ${cls==='red'?'red':cls==='green'?'green':'amber'}">${esc(severity)}</span>`;
-      l.appendChild(d);
-    }
-    const q=data.gemini_reasoning||{};
-    for(const textValue of (q.recommended_actions||[])){const d=document.createElement('div');d.className='finding';d.innerHTML=`<div class="finding-icon">→</div><div><strong>Suggested follow-up</strong><p>${esc(textValue)}</p></div><span class="tag">AI suggestion</span>`;l.appendChild(d);}
-  }
-  function renderReplay(data){const c=$('replay');c.innerHTML='';const ts=data?.transitions||[];if(!ts.length){c.innerHTML='<div class="empty">Use “Compare sample results” to see how evidence changes the built-in example.</div>';return}for(const t of ts){const d=document.createElement('div');d.className='replay-row';const positive=Number(t.change_t)>0;d.innerHTML=`<div><div class="replay-name">${esc(t.from)}</div><div class="replay-sub">→ ${esc(t.to)}</div></div><div class="replay-main"><strong>${num(t.final_supportable_before_t)} t → ${num(t.final_supportable_after_t)} t</strong><br>Main limit: ${esc(friendlyConstraint(t.binding_constraint_before))} → ${esc(friendlyConstraint(t.binding_constraint_after))}</div><div class="replay-change ${positive?'positive':'zero'}">${esc(fmtChange(t.change_t))}</div>`;c.appendChild(d)}}
-  function reset(){state.currentCase=null;state.files=[];$('claimed').textContent='—';$('supported').textContent='—';$('finalSupport').textContent='—';$('coverage').textContent='—';$('coverageDetail').textContent='Awaiting analysis';$('binding').textContent='—';$('bindingText').textContent='The main limit will appear after the documents are checked.';$('resultState').textContent='Waiting';$('statusBadge').textContent='Ready';$('supportPath').textContent='Claimed amount → Supported by records → Current support limit';$('supportBar').style.width='0%';$('geminiSummary').textContent='No AI summary yet.';$('factsTable').innerHTML='<tr><td colspan="6" class="empty">No checked details yet.</td></tr>';$('artifacts').innerHTML='<div class="empty">Uploaded documents will appear here after you check a claim.</div>';$('resolution').innerHTML='<div class="empty">Check a claim to see which documents could help fill a gap.</div>';$('findingsList').innerHTML='<div class="empty">Review notes will appear after the documents are checked.</div>';$('replay').innerHTML='<div class="empty">Use “Compare sample results” to see how evidence changes the built-in example.</div>';$('graphSvg').innerHTML='';state.replay=null;updateFiles();setStep(1);setGemini('pending');clearError();toast('Workspace reset.')}
-  function activateTab(name){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id===`tab-${name}`));document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===name|| (name==='chain'&&b.dataset.nav==='chain')))}
-  function goNav(name){if(name==='report'){downloadAudit();return}if(name==='overview'){document.getElementById('overview').scrollIntoView({behavior:'smooth',block:'start'});return}if(name==='analyze'){document.getElementById('analyzePanel').scrollIntoView({behavior:'smooth',block:'start'});return}activateTab(name);document.querySelector('.panel[style*="margin-top"]')?.scrollIntoView({behavior:'smooth',block:'start'})}
-  async function downloadAudit(){if(!state.currentCase){toast('Run an analysis before exporting.');return}try{const r=await fetch('/api/report.pdf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(state.currentCase)});if(!r.ok)throw new Error('PDF report generation failed. Try again after running analysis.');const blob=await r.blob();const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='evidentia-review-report.pdf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast('Plain-English PDF report downloaded.')}catch(e){error(e.message||'Could not download the PDF report.')}}
-  function toggleTheme(){state.light=!state.light;document.body.classList.toggle('light',state.light);document.body.classList.toggle('dark',!state.light);toast(state.light?'Light mode enabled.':'Dark mode enabled.');if(state.currentCase)renderGraph(state.currentCase)}
-  function toggleContrast(){state.highContrast=!state.highContrast;document.body.classList.toggle('high-contrast',state.highContrast);toast(state.highContrast?'High contrast enabled.':'High contrast disabled.');if(state.currentCase)renderGraph(state.currentCase)}
-  function scale(delta){state.fontScale=Math.max(.85,Math.min(1.25,state.fontScale+delta));document.documentElement.style.setProperty('--scale',state.fontScale);toast(`Text size ${Math.round(state.fontScale*100)}%.`)}
+  <script>
+    (function () {
+      const state = { files: [], currentCase: null, replay: null, cases: [], selectedCaseId: "", selectedClaimId: "", fontScale: 1, light: true, highContrast: false };
+      const $ = id => document.getElementById(id);
+      const esc = v => String(v ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+      const num = v => Number.isFinite(Number(v)) ? Number(v).toFixed(1) : '—';
+      const fmtChange = v => v == null ? 'Conditional' : `${Number(v) > 0 ? '+' : ''}${Number(v).toFixed(1)} t`;
+      let toastTimer;
+      function toast(msg) { const el = $('toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 2400) }
+      function error(msg) { $('error').textContent = msg; $('error').style.display = 'block' }
+      function clearError() { $('error').style.display = 'none'; $('error').textContent = '' }
+      function setStep(n) { for (let i = 1; i <= 4; i++) { const e = $('step' + i); e.classList.toggle('active', i === n); e.classList.toggle('done', i < n) } }
+      function loading(on, stage = 'Working…') { $('loading').style.display = on ? 'block' : 'none'; $('loadingStage').textContent = stage; $('analyzeBtn').disabled = on || state.files.length === 0 || !state.selectedCaseId || !state.selectedClaimId; if (on) $('statusBadge').textContent = 'Checking evidence'; }
+      function setProgress(v) { $('progressFill').style.width = `${Math.max(0, Math.min(100, v))}%` }
+      function addFiles(files) { const incoming = Array.from(files || []).filter(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf')); if (!incoming.length) { error('Evidentia currently accepts PDF evidence files.'); return } clearError(); const before = state.files.length; for (const f of incoming) { if (!state.files.some(x => x.name === f.name && x.size === f.size)) { state.files.push(f) } } updateFiles(); toast(`${state.files.length - before} PDF${state.files.length - before === 1 ? '' : 's'} added.`) }
+      function updateFiles() { $('fileSelection').textContent = `${state.files.length} file${state.files.length === 1 ? '' : 's'}`; $('selectedSummary').textContent = state.files.length ? `${state.files.length} evidence file${state.files.length === 1 ? '' : 's'} ready for analysis.` : 'Your selected files will appear here.'; $('analyzeBtn').disabled = state.files.length === 0 || !state.selectedCaseId || !state.selectedClaimId; const list = $('fileList'); list.innerHTML = ''; if (!state.files.length) { list.innerHTML = '<div class="empty">No evidence selected yet.</div>'; return } state.files.forEach((f, i) => { const d = document.createElement('div'); d.className = 'file-item'; d.innerHTML = `<div class="file-left"><div class="file-badge">PDF</div><div style="min-width:0"><div class="file-name" title="${esc(f.name)}">${esc(f.name)}</div><div class="file-size">${(f.size / 1024).toFixed(1)} KB</div></div></div><button class="remove" type="button" aria-label="Remove ${esc(f.name)}" data-remove="${i}">✕</button>`; list.appendChild(d) }); list.querySelectorAll('[data-remove]').forEach(b => b.onclick = () => { state.files.splice(Number(b.dataset.remove), 1); updateFiles(); toast('File removed.') }) }
+      async function checkHealth() { try { const r = await fetch('/api/health'); if (!r.ok) throw new Error(`API ${r.status}`); const data = await r.json(); $('serverStatus').textContent = 'App online'; $('systemApi').textContent = 'Online'; $('systemApi').className = 'positive'; $('systemStatusMeta').textContent = 'The app is ready'; setGemini(data.gemini_configured ? 'available' : 'demo'); } catch (e) { $('serverStatus').textContent = 'App offline'; $('systemApi').textContent = 'Offline'; $('systemApi').className = 'unverified'; $('systemStatusMeta').textContent = 'Start the app to continue'; setGemini('pending'); } }
+      function setGemini(status) { const ok = ['gemini', 'available', 'success'].includes(status); const demo = ['demo', 'demo_fallback'].includes(status); const label = ok ? 'Connected' : demo ? 'Demo mode' : 'Needs setup'; $('geminiTag').textContent = label; $('geminiTag').className = `tag ${ok ? 'green' : demo ? 'amber' : ''}`; $('systemGemini').textContent = ok ? 'Ready' : demo ? 'Demo mode' : 'Needs setup'; $('systemGemini').className = ok ? 'positive' : demo ? '' : 'unverified' }
+      function updateClaimOptions(caseId, preferredClaimId = '') { const item = state.cases.find(x => x.id === caseId); state.selectedCaseId = item?.id || ''; const select = $('claimSelect'); select.innerHTML = ''; state.selectedClaimId = ''; if (!item) { select.disabled = true; select.add(new Option('No case selected', '')); $('caseSummary').textContent = 'Choose a saved case to see its claims.'; updateFiles(); return } const claims = item.claims || []; if (!claims.length) { select.add(new Option('No claim in this case', '')); select.disabled = true; $('caseSummary').textContent = `${item.company?.name || 'Company'} · ${item.facility?.name || 'No facility linked'} · Add a claim before analyzing evidence.`; updateFiles(); return } for (const claim of claims) { const amount = claim.claimed_quantity ? ` · ${claim.claimed_quantity}` : ''; select.add(new Option(`${claim.ref} · ${claim.material}${amount}`, claim.id)) } select.disabled = false; state.selectedClaimId = claims.some(c => c.id === preferredClaimId) ? preferredClaimId : claims[0].id; select.value = state.selectedClaimId; $('caseSummary').textContent = `${item.company?.name || 'Company'} · ${item.facility?.name || 'No facility linked'}${item.facility?.location ? ' · ' + item.facility.location : ''}`; updateFiles() }
+      async function loadCases() { const select = $('caseSelect'); try { const r = await fetch('/api/cases'); if (!r.ok) throw new Error('Could not load cases. Start the app again and refresh this page.'); const data = await r.json(); state.cases = data.cases || []; select.innerHTML = ''; if (!state.cases.length) { select.add(new Option('No saved cases', '')); select.disabled = true; updateClaimOptions(''); return } for (const item of state.cases) select.add(new Option(`${item.ref} · ${item.title}`, item.id)); select.disabled = false; const preferred = state.cases.find(item => item.title === 'E-waste Recycling Claim Demo') || state.cases[0]; select.value = preferred.id; updateClaimOptions(preferred.id) } catch (e) { select.innerHTML = ''; select.add(new Option('Could not load cases', '')); select.disabled = true; $('caseSummary').textContent = 'Cases could not be loaded. Start the app again and refresh this page.'; updateClaimOptions(''); error(e.message || 'Could not load cases.') } }
+      async function analyzeUpload() { clearError(); if (!state.files.length) { error('Choose at least one PDF evidence file.'); return } if (!state.selectedCaseId || !state.selectedClaimId) { error('Choose a case and claim before starting the analysis.'); return } loading(true, 'Uploading evidence…'); setProgress(18); setStep(1); try { const fd = new FormData(); fd.append('case_id', state.selectedCaseId); fd.append('claim_id', state.selectedClaimId); state.files.forEach(f => fd.append('files', f, f.name)); await new Promise(r => setTimeout(r, 160)); setProgress(34); setStep(2); $('loadingStage').textContent = 'Reading the documents…'; const r = await fetch('/api/analyze-upload', { method: 'POST', body: fd }); if (!r.ok) throw new Error(await r.text() || `Analysis failed (${r.status})`); setProgress(66); setStep(3); $('loadingStage').textContent = 'Checking details and calculating the supported amount…'; const data = await r.json(); setProgress(86); setStep(4); $('loadingStage').textContent = 'Preparing the review result…'; state.currentCase = data; renderCase(data); await new Promise(r => setTimeout(r, 220)); setProgress(100); toast(data.status === 'review_required' ? (data.message || 'The files need a manual review before a result can be calculated.') : 'Evidence checked.'); } catch (e) { error(e.message || 'Unable to analyze evidence package.'); $('statusBadge').textContent = 'Error' } finally { loading(false); setStep(state.currentCase ? 4 : 1); } }
+      async function sampleAnalysis() { clearError(); loading(true, 'Loading the baseline sample case…'); setProgress(22); setStep(1); try { const r = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ scenario: 'baseline' }) }); if (!r.ok) throw new Error(await r.text() || `Sample analysis failed (${r.status})`); setProgress(52); setStep(3); $('loadingStage').textContent = 'The AI is reading the sample documents and the calculation rules are checking the amounts…'; const data = await r.json(); state.currentCase = data; renderCase(data); setProgress(100); toast('Sample review complete.') } catch (e) { error(e.message || 'Unable to run sample analysis.') } finally { loading(false); setStep(state.currentCase ? 4 : 1) } }
+      async function loadReplay(activate = false) { try { const r = await fetch('/api/replay'); if (!r.ok) throw new Error(`Replay ${r.status}`); state.replay = await r.json(); renderReplay(state.replay); if (activate) activateTab('replay'); toast('Sample comparison loaded.') } catch (e) { error(e.message || 'Replay unavailable.') } }
+      function findQ(data, types, fields) { const ids = new Set((data.artifacts || []).filter(a => types.includes(String(a.artifact_type || '').toLowerCase())).map(a => a.artifact_id)); for (const f of fields) { const hit = (data.grounding || []).find(x => ids.has(x.artifact_id) && String(x.field || '').toLowerCase().replaceAll(' ', '_') === f && x.state === 'verified' && x.normalized_value != null); if (hit) return Number(hit.normalized_value) } return null }
+      function displayName(id, type, file) {
+        const map = {
+          'MAN-01': 'Transport record', 'MAN-03': 'Transport record add-on', 'WB-01': 'Receiving weight record', 'SHIFT-01': 'Processing shift record', 'FAC-01': 'Facility details', 'CERT-01': 'Recycling certificate', 'INV-01': 'Recycler invoice', 'DEC-01': 'Recycler declaration'
+        }; return map[id] || ({ transport_manifest: 'Transport record', weighbridge: 'Receiving weight record', facility_profile: 'Facility details', processing_shift_record: 'Processing shift record', shift_record: 'Processing shift record', certificate: 'Recycling certificate', invoice: 'Recycler invoice', declaration: 'Recycler declaration' }[String(type || '').toLowerCase()] || file || id || 'Evidence document')
+      }
+      function friendlyConstraint(value) { const map = { 'processing capacity': 'Facility processing capacity', 'transport/custody evidence': 'Transport records', 'receipt/custody evidence': 'Receiving weight record', 'none identified': 'No clear limit', 'not identified': 'Not identified' }; return map[String(value || '').toLowerCase()] || String(value || 'Not identified').replaceAll('_', ' ') }
+      function friendlyOrigin(value) { const map = { claimant_recycler: 'Claimant / recycler', counterparty: 'Other party', independent_system: 'Independent system', regulator_reference: 'Regulator reference', unknown: 'Source not confirmed' }; return map[String(value || 'unknown').toLowerCase()] || String(value).replaceAll('_', ' ') }
+      function friendlyField(value) { const map = { quantity_t: 'Quantity', net_weight_t: 'Received weight', capacity_t: 'Processing capacity', received_quantity_t: 'Received quantity', date: 'Date', timestamp: 'Time', facility_id: 'Facility ID', material: 'Material', vehicle_id: 'Vehicle ID', manifest_id: 'Manifest ID', receipt_id: 'Receipt ID', certificate_id: 'Certificate ID', sender: 'Sender', receiver: 'Receiver', processing_period: 'Processing period' }; return map[String(value || '').toLowerCase()] || String(value || '—').replaceAll('_', ' ') }
+      function renderCase(data) { state.currentCase = data; const e = data.envelope || {}, p = data.provenance || {}, c = data.extraction_coverage || {}, g = data.gemini_reasoning || {}; $('claimed').textContent = num(e.claimed_t); $('supported').textContent = num(e.evidence_supported_t); $('finalSupport').textContent = num(e.final_supportable_t); $('coverage').textContent = c.coverage_pct == null ? '—' : Number(c.coverage_pct).toFixed(1); $('coverageDetail').textContent = c.coverage_pct == null ? 'No eligible documents were sent for extraction' : `${c.complete ? 'Extraction ran for all eligible documents; this is not claim verification' : 'Some eligible documents produced no extracted details'}`; const noMass = Number(e.evidence_supported_t || 0) <= 0; const resultComplete = data.status !== 'review_required' && !!data.envelope && !noMass; $('resultState').textContent = data.status === 'review_required' ? 'Review needed' : noMass ? 'Support not established' : resultComplete ? 'Analysis complete' : 'Review needed'; $('statusBadge').textContent = data.status === 'review_required' ? 'Review needed' : noMass ? 'Support not established' : resultComplete ? 'Analyzed' : 'Review needed'; $('binding').textContent = friendlyConstraint(e.binding_constraint); $('bindingText').textContent = e.binding_constraint === 'transport/custody evidence' ? 'The transport records are the current limit.' : e.binding_constraint === 'receipt/custody evidence' ? 'The receiving weight record is the current limit.' : e.binding_constraint === 'processing capacity' ? 'The facility capacity record is the current limit.' : 'The current limit is based on the evidence checked so far.'; const pct = e.claimed_t ? Math.max(0, Math.min(100, (e.final_supportable_t / e.claimed_t) * 100)) : 0; $('supportBar').style.width = `${pct}%`; $('supportPath').innerHTML = `<strong>${num(e.claimed_t)} t claimed</strong> → <strong>${num(e.evidence_supported_t)} t in records</strong> → <strong>${num(e.final_supportable_t)} t currently supported</strong>`; $('independence').textContent = p.independence_ratio ?? '—'; $('lineageBadge').textContent = `${p.lineage_group_count ?? '—'} source groups`; $('geminiSummary').textContent = g.summary || (data.status === 'review_required' ? 'The AI did not review these files because none passed the first check.' : 'No AI summary was returned.'); if (data.status === 'review_required') { $('geminiTag').textContent = 'Not run'; $('geminiTag').className = 'tag' } else { setGemini(g.status) } renderArtifacts(data.artifacts || [], data.intake || []); renderFacts(data.grounding || []); renderSnapshot(data); renderGraph(data); if (data.status === 'review_required') { $('resolution').innerHTML = '<div class="empty">Review the file type and content, then upload a clearer or more relevant document.</div>' } else { renderResolution(data.resolution_path || {}) } renderFindings(data); if (data.dossier_id) { state.replay = null; renderReplay(null) } else { renderReplay(state.replay) } document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }) }
+      function renderArtifacts(arts, intake = []) { const c = $('artifacts'); c.innerHTML = ''; if (!arts.length) { c.innerHTML = '<div class="empty">No evidence documents returned.</div>'; return } const gate = new Map((intake || []).map(x => [String(x.artifact_id), x])); for (const a of arts) { const g = gate.get(String(a.artifact_id)) || {}; const status = String(g.status || 'checked'); const label = status === 'excluded' ? 'Excluded from this claim' : status === 'review' ? 'Human review required' : status === 'accepted' ? 'Accepted for extraction' : 'Submitted'; const cls = status === 'excluded' ? 'red' : status === 'review' ? 'amber' : status === 'accepted' ? 'green' : ''; const el = document.createElement('div'); el.className = 'chain-item'; el.innerHTML = `<div class="chain-icon">▱</div><div class="chain-main"><strong>${esc(a.filename || displayName(a.artifact_id, a.artifact_type))}</strong><span><span class="mono">${esc(a.artifact_id)}</span> · ${esc(String(a.artifact_type || 'unknown'))}</span><span class="tag ${cls}">${esc(label)}</span><span>${esc(g.reason || '')}</span></div><div class="chain-meta"><strong>${esc(friendlyOrigin(a.origin_class))}</strong><span>${esc(displayName(a.artifact_id, a.artifact_type, a.filename))}</span></div>`; c.appendChild(el) } }
+      function renderFacts(facts) { const b = $('factsTable'); b.innerHTML = ''; const rows = (facts || []).filter(x => x.state === 'verified' || x.normalized_value != null); if (!rows.length) { b.innerHTML = '<tr><td colspan="6" class="empty">No details could be checked from the documents.</td></tr>'; return } for (const f of rows) { const tr = document.createElement('tr'); tr.innerHTML = `<td>${esc(displayName(f.artifact_id))}</td><td>${esc(friendlyField(f.field))}</td><td>${esc(f.normalized_value == null ? '—' : f.normalized_value)}</td><td>${esc(f.unit || '—')}</td><td>${esc(f.confidence || '—')}</td><td class="${f.state === 'verified' ? 'verified' : 'unverified'}">${esc(f.state === 'verified' ? 'Checked' : 'Needs review')}</td>`; b.appendChild(tr) } }
+      function renderSnapshot(data) {
+        const arts = data.artifacts || [], typeIs = (a, keys) => { const t = String(a.artifact_type || '').toLowerCase(); return keys.some(k => t === k || t.includes(k)); }, count = keys => arts.filter(a => typeIs(a, keys)).length;
+        const env = data.envelope || {};
+        const transport = findQ(data, ['transport_manifest'], ['quantity_t', 'net_weight_t', 'transport_t']);
+        const receipt = findQ(data, ['weighbridge'], ['quantity_t', 'net_weight_t', 'received_quantity_t']);
+        const facility = findQ(data, ['facility_profile'], ['capacity_t', 'processing_capacity_t']);
+        const shift = findQ(data, ['shift_record', 'processing_shift_record'], ['capacity_t', 'processing_capacity_t']);
+        const processing = shift ?? facility, claimed = Number(env.claimed_t) || 0;
+        const set = (bar, numEl, v) => { $(bar).style.width = `${claimed && v != null ? Math.max(0, Math.min(100, (Number(v) / claimed) * 100)) : 0}%`; $(numEl).textContent = v == null ? 'Not established' : `${num(v)} / ${num(claimed)} t`; };
+        const transportCount = count(['transport_manifest', 'transport', 'manifest']), receiptCount = count(['weighbridge', 'receipt', 'receiving_log']), facilityCount = count(['facility_profile', 'facility']);
+        const processingCount = arts.filter(a => typeIs(a, ['processing', 'shift'])).length;
+        const otherCount = Math.max(0, arts.length - transportCount - receiptCount - facilityCount - processingCount);
+        $('docCountBig').textContent = arts.length;
+        $('transportCount').textContent = transportCount; $('receiptCount').textContent = receiptCount;
+        $('facilityCount').textContent = facilityCount; $('processingCount').textContent = processingCount; $('otherCount').textContent = otherCount;
+        const categories = [
+          { n: transportCount, c: 'var(--green)' }, { n: receiptCount, c: 'var(--primary)' },
+          { n: facilityCount, c: 'var(--purple)' }, { n: processingCount, c: 'var(--amber)' }, { n: otherCount, c: '#64748b' }
+        ];
+        let cursor = 0; const segments = [];
+        categories.filter(x => x.n > 0).forEach(x => { const end = cursor + (x.n / Math.max(arts.length, 1)) * 100; segments.push(`${x.c} ${cursor.toFixed(2)}% ${end.toFixed(2)}%`); cursor = end; });
+        document.querySelector('.donut').style.background = segments.length ? `conic-gradient(${segments.join(',')})` : 'var(--surface-2)';
+        set('transportBar', 'transportBarNum', transport); set('processingBar', 'processingBarNum', processing); set('facilityBar', 'facilityBarNum', facility); set('receiptBar', 'receiptBarNum', receipt);
+      }
+      function nodeSvg(x, y, w, h, title, sub, cls = '') { return `<g class="graph-node ${cls}"><rect x="${x}" y="${y}" rx="16" width="${w}" height="${h}"/><text x="${x + w / 2}" y="${y + 27}" text-anchor="middle">${esc(title)}</text><text class="sub" x="${x + w / 2}" y="${y + 47}" text-anchor="middle">${esc(sub)}</text></g>` }
+      function renderGraph(data) {
+        const g = data.constraint_graph || {}, svg = $('graphSvg');
+        const nodes = Array.isArray(g.nodes) ? g.nodes : [], edges = Array.isArray(g.edges) ? g.edges : [];
+        $('graphNodes').textContent = g.node_count ?? nodes.length;
+        $('graphEdges').textContent = g.edge_count ?? edges.length;
+        if (!nodes.length) { svg.innerHTML = '<text x="450" y="205" text-anchor="middle" fill="currentColor" font-size="18">No evidence graph data was returned.</text>'; return; }
+        const typeOrder = ['claim', 'artifact', 'fact', 'constraint'];
+        const groups = typeOrder.map(type => ({ type, items: nodes.filter(n => String(n.type || '').toLowerCase() === type) })).filter(x => x.items.length);
+        const positions = {}; const visible = []; const maxPerRow = 5; const rowY = { claim: 45, artifact: 145, fact: 245, constraint: 345 };
+        groups.forEach(group => {
+          const items = group.items.slice(0, maxPerRow);
+          const step = 840 / Math.max(items.length, 1);
+          items.forEach((node, i) => { const x = 30 + i * step + (step - 150) / 2; const y = rowY[group.type] ?? 145; positions[node.id] = { x, y, cx: x + 75, cy: y + 26 }; visible.push(node); });
+        });
+        let html = '<defs><marker id="actualArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--muted)"/></marker></defs>';
+        let visibleEdgeCount = 0;
+        edges.forEach(edge => {
+          const a = positions[edge.from], b = positions[edge.to]; if (!a || !b) return; visibleEdgeCount++;
+          const kind = String(edge.edge || '').toUpperCase();
+          const cls = kind.includes('CONTRADICT') ? 'conflict' : (kind.includes('BOUND') || kind.includes('CAPACITY') ? 'constraint' : 'support');
+          html += `<line class="edge ${cls}" x1="${a.cx}" y1="${a.cy + 15}" x2="${b.cx}" y2="${b.cy - 15}" marker-end="url(#actualArrow)"/>`;
+        });
+        visible.forEach(node => {
+          const pos = positions[node.id], type = String(node.type || 'other');
+          const label = String(node.label || node.id); const short = label.length > 25 ? label.slice(0, 22) + '…' : label;
+          const meta = node.value != null ? `${node.value}${node.unit ? ' ' + node.unit : ''}` : (node.artifact_type || type);
+          html += `<g class="graph-node"><rect x="${pos.x}" y="${pos.y}" rx="12" width="150" height="52"/><text x="${pos.cx}" y="${pos.y + 22}" text-anchor="middle">${esc(short)}</text><text class="sub" x="${pos.cx}" y="${pos.y + 39}" text-anchor="middle">${esc(String(meta).slice(0, 28))}</text></g>`;
+        });
+        const hidden = nodes.length - visible.length;
+        const note = edges.length === 0 ? 'No confirmed links between these items.' : `${visibleEdgeCount} actual link(s) drawn${hidden ? `; ${hidden} additional node(s) not shown here` : ''}.`;
+        html += `<text x="450" y="420" text-anchor="middle" fill="currentColor" opacity=".8" font-size="12">${esc(note)}</text>`;
+        svg.innerHTML = html;
+      }
+      function renderResolution(res) { const c = $('resolution'); c.innerHTML = ''; const actions = res.actions || []; if (!actions.length) { c.innerHTML = '<div class="empty">No additional evidence actions returned.</div>'; return } for (const a of actions) { const id = a.artifact_id, name = displayName(id); const change = a.potential_change_t == null ? 'Conditional' : fmtChange(a.potential_change_t); const d = document.createElement('div'); d.className = 'resolution-card'; d.innerHTML = `<div class="resolution-top"><div><div class="resolution-name">${esc(name)}</div><div class="resolution-stage">${esc(id)} · ${esc(a.stage || 'evidence')}</div></div><span class="resolution-badge">${esc(change)}</span></div><div class="resolution-copy"><b>What this evidence is:</b> ${esc(a.evidence || name)}.<br><b>Why it matters:</b> ${esc(a.effect || 'It could change the current limiting constraint if validated and correctly linked.')}<br><b>Condition:</b> ${esc(a.condition || 'Human validation and correct linkage are required.')}</div>`; c.appendChild(d) } }
+      function renderFindings(data) {
+        const l = $('findingsList'); l.innerHTML = '';
+        const items = Array.isArray(data.findings) ? data.findings : [];
+        if (data.status === 'review_required' && !items.length) { items.push({ type: 'intake_review', severity: 'review', message: data.message || 'No document passed the intake checks.' }); }
+        if (!items.length) { l.innerHTML = '<div class="empty">No explicit findings were returned. Review the source documents and claim scope before relying on the result.</div>'; return; }
+        for (const x of items) {
+          const severity = String(x.severity || 'note').toLowerCase();
+          const cls = ['critical', 'error', 'conflict'].includes(severity) ? 'red' : (['review', 'warning'].includes(severity) ? '' : 'green');
+          const title = String(x.type || 'finding').replaceAll('_', ' ').replace(/^./, c => c.toUpperCase());
+          const ids = Array.isArray(x.source_artifacts) && x.source_artifacts.length ? ` Source documents: ${x.source_artifacts.join(', ')}.` : '';
+          const d = document.createElement('div'); d.className = `finding ${cls}`;
+          d.innerHTML = `<div class="finding-icon">${cls === 'red' ? '!' : cls === 'green' ? '✓' : '?'}</div><div><strong>${esc(title)}</strong><p>${esc((x.message || 'No message supplied.') + ids)}</p></div><span class="tag ${cls === 'red' ? 'red' : cls === 'green' ? 'green' : 'amber'}">${esc(severity)}</span>`;
+          l.appendChild(d);
+        }
+        const q = data.gemini_reasoning || {};
+        for (const textValue of (q.recommended_actions || [])) { const d = document.createElement('div'); d.className = 'finding'; d.innerHTML = `<div class="finding-icon">→</div><div><strong>Suggested follow-up</strong><p>${esc(textValue)}</p></div><span class="tag">AI suggestion</span>`; l.appendChild(d); }
+      }
+      function renderReplay(data) { const c = $('replay'); c.innerHTML = ''; const ts = data?.transitions || []; if (!ts.length) { c.innerHTML = '<div class="empty">Use “Compare sample results” to see how evidence changes the built-in example.</div>'; return } for (const t of ts) { const d = document.createElement('div'); d.className = 'replay-row'; const positive = Number(t.change_t) > 0; d.innerHTML = `<div><div class="replay-name">${esc(t.from)}</div><div class="replay-sub">→ ${esc(t.to)}</div></div><div class="replay-main"><strong>${num(t.final_supportable_before_t)} t → ${num(t.final_supportable_after_t)} t</strong><br>Main limit: ${esc(friendlyConstraint(t.binding_constraint_before))} → ${esc(friendlyConstraint(t.binding_constraint_after))}</div><div class="replay-change ${positive ? 'positive' : 'zero'}">${esc(fmtChange(t.change_t))}</div>`; c.appendChild(d) } }
+      function reset() { state.currentCase = null; state.files = []; $('claimed').textContent = '—'; $('supported').textContent = '—'; $('finalSupport').textContent = '—'; $('coverage').textContent = '—'; $('coverageDetail').textContent = 'Awaiting analysis'; $('binding').textContent = '—'; $('bindingText').textContent = 'The main limit will appear after the documents are checked.'; $('resultState').textContent = 'Waiting'; $('statusBadge').textContent = 'Ready'; $('supportPath').textContent = 'Claimed amount → Supported by records → Current support limit'; $('supportBar').style.width = '0%'; $('geminiSummary').textContent = 'No AI summary yet.'; $('factsTable').innerHTML = '<tr><td colspan="6" class="empty">No checked details yet.</td></tr>'; $('artifacts').innerHTML = '<div class="empty">Uploaded documents will appear here after you check a claim.</div>'; $('resolution').innerHTML = '<div class="empty">Check a claim to see which documents could help fill a gap.</div>'; $('findingsList').innerHTML = '<div class="empty">Review notes will appear after the documents are checked.</div>'; $('replay').innerHTML = '<div class="empty">Use “Compare sample results” to see how evidence changes the built-in example.</div>'; $('graphSvg').innerHTML = ''; state.replay = null; updateFiles(); setStep(1); setGemini('pending'); clearError(); toast('Workspace reset.') }
+      function activateTab(name) { document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name)); document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `tab-${name}`)); document.querySelectorAll('[data-nav]').forEach(b => b.classList.toggle('active', b.dataset.nav === name || (name === 'chain' && b.dataset.nav === 'chain'))) }
+      function goNav(name) { if (name === 'report') { downloadAudit(); return } if (name === 'overview') { document.getElementById('overview').scrollIntoView({ behavior: 'smooth', block: 'start' }); return } if (name === 'analyze') { document.getElementById('analyzePanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); return } activateTab(name); document.querySelector('.panel[style*="margin-top"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
+      async function downloadAudit() { if (!state.currentCase) { toast('Run an analysis before exporting.'); return } try { const r = await fetch('/api/report.pdf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state.currentCase) }); if (!r.ok) throw new Error('PDF report generation failed. Try again after running analysis.'); const blob = await r.blob(); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'evidentia-review-report.pdf'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500); toast('Plain-English PDF report downloaded.') } catch (e) { error(e.message || 'Could not download the PDF report.') } }
+      function toggleTheme() { state.light = !state.light; document.body.classList.toggle('light', state.light); document.body.classList.toggle('dark', !state.light); toast(state.light ? 'Light mode enabled.' : 'Dark mode enabled.'); if (state.currentCase) renderGraph(state.currentCase) }
+      function toggleContrast() { state.highContrast = !state.highContrast; document.body.classList.toggle('high-contrast', state.highContrast); toast(state.highContrast ? 'High contrast enabled.' : 'High contrast disabled.'); if (state.currentCase) renderGraph(state.currentCase) }
+      function scale(delta) { state.fontScale = Math.max(.85, Math.min(1.25, state.fontScale + delta)); document.documentElement.style.setProperty('--scale', state.fontScale); toast(`Text size ${Math.round(state.fontScale * 100)}%.`) }
 
-  $('chooseBtn').onclick=()=>$('fileInput').click(); $('dropzone').onclick=e=>{if(e.target.closest('.choose'))return;$('fileInput').click()}; $('dropzone').onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('fileInput').click()}; $('fileInput').onchange=e=>addFiles(e.target.files); $('dropzone').ondragover=e=>{e.preventDefault();$('dropzone').classList.add('drag')}; $('dropzone').ondragleave=()=>$('dropzone').classList.remove('drag'); $('dropzone').ondrop=e=>{e.preventDefault();$('dropzone').classList.remove('drag');addFiles(e.dataTransfer.files)};
-  $('clearFiles').onclick=()=>{state.files=[];updateFiles();toast('Selected files cleared.')};$('caseSelect').onchange=()=>updateClaimOptions($('caseSelect').value);$('claimSelect').onchange=()=>{state.selectedClaimId=$('claimSelect').value;updateFiles()};$('analyzeBtn').onclick=analyzeUpload;$('sampleBtn').onclick=sampleAnalysis;$('loadReplayBtn').onclick=loadReplay;$('exportBtn').onclick=downloadAudit;$('resetBtn').onclick=reset;
-  $('themeToggle').onclick=toggleTheme;$('accessTheme').onclick=toggleTheme;$('contrastToggle').onclick=toggleContrast;$('accessContrast').onclick=toggleContrast;$('fontMinus').onclick=()=>scale(-.05);$('fontPlus').onclick=()=>scale(.05);$('accessMinus').onclick=()=>scale(-.05);$('accessPlus').onclick=()=>scale(.05);
-  document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>goNav(b.dataset.nav));document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>activateTab(b.dataset.tab));
-  checkHealth();updateFiles();loadCases();
-  loadReplay(false).catch(()=>{});
-})();
-</script>
+      $('chooseBtn').onclick = () => $('fileInput').click(); $('dropzone').onclick = e => { if (e.target.closest('.choose')) return; $('fileInput').click() }; $('dropzone').onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') $('fileInput').click() }; $('fileInput').onchange = e => addFiles(e.target.files); $('dropzone').ondragover = e => { e.preventDefault(); $('dropzone').classList.add('drag') }; $('dropzone').ondragleave = () => $('dropzone').classList.remove('drag'); $('dropzone').ondrop = e => { e.preventDefault(); $('dropzone').classList.remove('drag'); addFiles(e.dataTransfer.files) };
+      $('clearFiles').onclick = () => { state.files = []; updateFiles(); toast('Selected files cleared.') }; $('caseSelect').onchange = () => updateClaimOptions($('caseSelect').value); $('claimSelect').onchange = () => { state.selectedClaimId = $('claimSelect').value; updateFiles() }; $('analyzeBtn').onclick = analyzeUpload; $('sampleBtn').onclick = sampleAnalysis; $('loadReplayBtn').onclick = loadReplay; $('exportBtn').onclick = downloadAudit; $('resetBtn').onclick = reset;
+      $('themeToggle').onclick = toggleTheme; $('accessTheme').onclick = toggleTheme; $('contrastToggle').onclick = toggleContrast; $('accessContrast').onclick = toggleContrast; $('fontMinus').onclick = () => scale(-.05); $('fontPlus').onclick = () => scale(.05); $('accessMinus').onclick = () => scale(-.05); $('accessPlus').onclick = () => scale(.05);
+      document.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => goNav(b.dataset.nav)); document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => activateTab(b.dataset.tab));
+      checkHealth(); updateFiles(); loadCases();
+      loadReplay(false).catch(() => { });
+    })();
+  </script>
 </body>
+
 </html>
