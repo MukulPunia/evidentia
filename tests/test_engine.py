@@ -1,8 +1,10 @@
 
 from copy import deepcopy
+from io import BytesIO
 
 import pytest
 from fastapi.testclient import TestClient
+from pypdf import PdfReader
 
 import backend.main as main
 from gemini.service import demo_extraction
@@ -151,4 +153,37 @@ def test_demo_analysis_does_not_mutate_shared_scenario_templates(monkeypatch):
     assert response.status_code == 200
     assert main.SCENARIOS["baseline"][0].filename == before_filename
     assert main.SCENARIOS["baseline"][0].metadata == before_metadata
+
+def test_upload_analysis_requires_explicit_case_and_claim():
+    response = client.post(
+        "/api/analyze-upload",
+        files=[("files", ("evidence.pdf", b"%PDF-1.4\\n", "application/pdf"))],
+        data={"case_id": "", "claim_id": ""},
+    )
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == (
+        "Select a case and claim before analyzing evidence."
+    )
+
+
+def test_report_endpoint_returns_readable_pdf():
+    analysis = client.post(
+        "/api/analyze",
+        json={"scenario": "baseline"},
+    )
+    assert analysis.status_code == 200
+
+    response = client.post("/api/report.pdf", json=analysis.json())
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("application/pdf")
+    assert response.content.startswith(b"%PDF-")
+
+    reader = PdfReader(BytesIO(response.content))
+    extracted_text = "\\n".join(
+        page.extract_text() or "" for page in reader.pages
+    )
+    assert "Evidentia Evidence Review" in extracted_text
+    assert "Claimed amount" in extracted_text
 
