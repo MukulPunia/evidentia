@@ -1,4 +1,5 @@
 from __future__ import annotations
+from copy import deepcopy
 import hashlib
 import mimetypes
 import os
@@ -1128,7 +1129,9 @@ async def analyze_upload(
     }
 @app.post('/api/analyze')
 def analyze(req: ScenarioRequest):
-    artifacts = SCENARIOS.get(req.scenario)
+    # Scenario fixtures are shared module-level templates; copy them before
+    # attaching request-specific file paths and extracted metadata.
+    artifacts = deepcopy(SCENARIOS.get(req.scenario))
     if artifacts is None:
         raise HTTPException(404, 'Unknown scenario')
     claim = Claim(
